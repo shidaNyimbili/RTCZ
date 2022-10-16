@@ -92,3 +92,95 @@ ggsave("Viz/RTC/Supply Chain/Det Draft.png",
        type="cairo",
        height = 6.5,
        width = 13)
+
+####TLD Trends
+tld <- read_xlsx("Data/RTC/Supply Chain/TLD trends.xlsx")
+tld  <- tld  %>%
+  mutate(month_chr = str_sub(period,
+                             start=1,
+                             end=nchar(period)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(period, 
+                        start=nchar(period)-4,
+                        end=nchar(period)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+sum(tld$month_chr!=tld$month) # expecting 0 if vars same
+
+# ###Perinatal MOrtality Rate MOnthly Trend
+# pd <- read_xls("C:/Users/snyimbili/Documents/RTCZ/Data Analytics & GIS/General Datasets/New Born R/Still&Mecerated Rates.xls")
+# 
+# 
+# pd <- melt(pd[c(1, 2, 3)], id = 'period')
+# 
+# 
+# pd$period <- as.Date(pd$period)
+
+tld
+names(tld)
+
+tld1 <- tld %>%
+  select(2,3,4,10)
+
+tld1
+
+# tld1 <- melt(tld1[c(1, 2, 3,4)], id = 'mnthyr')
+
+# fmsb <- ggplot(tld1, aes(x=mnthyr, y=value , fill=variable), alpha=0.6)+ 
+#   stat_smooth(method = "loess", size = 1, se=F) + geom_point(size=1, colour=usaid_red) +
+  #geom_bar(stat="identity", position="dodge") +
+  #geom_area(position=position_dodge(), color="#CFCDC9") +
+  # geom_area(alpha=.7, fill="#BA0C2F", alpha=0.6, position=position_dodge()) +
+  # scale_x_date(date_breaks = "2 months", date_labels = "%b %y") +
+  # scale_fill_manual(values=c("#8AC3BC", "#002F6C")) + 
+  # basey +
+  # labs(fill="Legend:", title="Fresh still rate and Macerated still births",
+  #      x="",
+  #      y="Rate")
+
+tld1 <- tld1 %>%
+  rename(tx_curr = 1,
+         tld_curr = 2,
+         tld.cov= 3,
+         mnth = 4)
+
+tld1
+
+
+tld2 <- tld1 %>% 
+  gather(key = subpop , value = rate, c(mal.cases))
+
+rnf_malprov1
+
+
+# rnf_malprov2 <- rnf_malprov1 %>%
+#   select(1, 2) %>%
+#   na.omit()
+
+rnf_malprov1
+
+rnf_malprov2 <- filter(rnf_malprov1, prov  == 'Luapula')
+
+rnf_malprov2
+
+scalefactor <- max(rnf_malprov$mal.cases) / max(rnf_malprov$rainfall)
+
+ggplot(rnf_malprov2, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
+  #ggplot(rnf_malprov,aes(x = mnthyr))+
+  #geom_line(alpha=.6, size=.4) +
+  # geom_point(alpha=.6, size=.4) + 
+  stat_smooth(method = "loess", size = 1, se=F) + geom_point(size=1, colour=usaid_red) +
+  #geom_smooth(aes(y=mal.cases, colour="mal.cases"), method="lm", size = .4, se=F) +
+  #geom_point(aes(y=mal.cases, colour="mal.cases"),alpha=.6, size=.2, colour=usaid_red) +
+  geom_smooth(aes(y=rainfall*scalefactor, colour="rainfall"), method=loess, size = 1, se=F) +
+  geom_point(aes(y=rainfall*scalefactor, colour="rainfall"),alpha=.6, size=1) +
+  scale_x_date(date_labels="%Y",date_breaks = "1 year") +
+  scale_y_continuous(name ="Confirmed Malaria Cases", labels=comma,
+                     limits=c(0,150000),
+                     breaks = c(0,50000,100000,150000),
+                     sec.axis=sec_axis(trans = ~./scalefactor, name = "Rainfall (mm)")) +
+
+fmsb 
