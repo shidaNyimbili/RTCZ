@@ -2,7 +2,7 @@
 source("scripts/r prep2.r")
 
 #'*Stock availability*
-stk <- read_xlsx("Data/RTC/Supply Chain/determine_TLD 29.09.2022.xlsx")
+stk <- read_xlsx("Data/RTC/Supply Chain/determine_TLD.xlsx")
 stk  <- stk  %>%
   mutate(month_chr = str_sub(period,
                              start=1,
@@ -19,6 +19,8 @@ stk  <- stk  %>%
 sum(stk$month_chr!=stk$month) # expecting 0 if vars same
 
 stk
+
+install.packages("scales")
 
 ###Rename the cell names of provinces
 stk$Province_Determine <- gsub("Luapula _% Availability","Luapula", stk$Province_Determine)
@@ -68,7 +70,7 @@ dtmin_plt <- ggplot(dtmin, aes(x = mth, y = rate, group = subpop, colour = subpo
   geom_point(alpha=.6, size=1) + 
   geom_smooth(method = loess, size = .8, se=FALSE) +
   scale_y_continuous(limits = c(0,1),
-                     labels = percent,
+                     labels = percent(y, accuracy = 0),
                      breaks = c(.2, .4, .6, .8, 1)) +
   scale_x_date(date_labels="%b %y",date_breaks="2 months") +
   facet_wrap(~prov) + faceted +
@@ -183,4 +185,62 @@ ggplot(rnf_malprov2, aes(x = mnthyr, y = rate, group = subpop, colour = subpop))
                      breaks = c(0,50000,100000,150000),
                      sec.axis=sec_axis(trans = ~./scalefactor, name = "Rainfall (mm)")) +
 
-fmsb 
+fmsb
+
+
+######HTS
+hts <- read_xlsx("Data/RTC/HTS/HTS.xlsx")
+hts  <- hts %>%
+  mutate(month_chr = str_sub(period,
+                             start=1,
+                             end=nchar(period)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(period, 
+                        start=nchar(period)-4,
+                        end=nchar(period)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+sum(stk$month_chr!=stk$month) # expecting 0 if vars same
+
+hts
+names(hts)
+
+hts <- hts %>%
+  select(2,3,4,10)
+hts
+
+hts1 <- hts %>%
+  rename(prov=1,
+         adults=2,
+         peads=3,
+         mnth=4)
+hts1
+
+hts1 <- hts1 %>% 
+  gather(key = substat , value = rate, c(adults,peads))
+
+dtmin_plt <- ggplot(hts1, aes(x = mnth, y = rate, group = substat, colour = substat)) +
+  geom_point(alpha=.6, size=1.2) + 
+  geom_smooth(method = loess, size = 1, se=FALSE) +
+  scale_y_continuous(labels=comma,
+                     breaks = c(100, 400, 800, 1200)) +
+  scale_x_date(date_labels="%b %y",date_breaks="2 month") +
+  facet_wrap(~prov) + faceted +
+  labs(x="", y="", caption="Data Source: USAID ACTION HIV", title="HTS TST Performance Trends") +
+  scale_color_manual(name ="",
+                     values = c(usaid_red, usaid_blue),
+                     labels = c("Adults HTS TST Performance", "Peads HTS TST Performance"))+ 
+  basey
+
+dtmin_plt
+
+
+ggsave("C:/Users/snyimbili/Desktop/Conference/HTS.png",
+       device="png",
+       type="cairo",
+       height = 5,
+       width = 10)
+
