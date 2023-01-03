@@ -3,7 +3,7 @@ library(lm)
 installed.packages("lm")
 
 # Load the necessary libraries
-library(caret)
+source("Scripts/dataPrep.r")
 
 # Load the dataset
 data <- read.csv("data.csv")
@@ -14,7 +14,7 @@ train_ind <- createDataPartition(data$target, p = 0.8, list = FALSE)
 train <- data[train_ind, ]
 test <- data[-train_ind, ]
 
-# Build the model using the training data
+# Build the predictive model using the training data
 model <- train(target ~ ., data = train, method = "lm")
 
 # Make predictions on the test data
