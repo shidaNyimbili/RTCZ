@@ -30,7 +30,8 @@ zam_packages <- c("tidyverse", "here", "gifski", "gt","gtsummary","gghighlight",
                   "shiny", "rgeoboundaries", "nasapower", 
                   "leaflet", "ggsflabel", "sf", "RSelenium", "netstat", "GGally", "calendR", "areaplot", "hexbin",
                   "webshot", "oceanis", "SPlit", "gsubfn", "proto","fpp", "mapview", "shinydashboard", "packrat",
-                  "gt", "bigD","formattable", "reactablefmtr", "scales", "caret","predict3d")
+                  "gt", "bigD","formattable", "reactablefmtr", "scales", "caret","predict3d", "ggpmisc", "cowplot", 
+                  "googleway", "ggplot2", "ggrepel", "ggspatial", "libwgeom", "sf", "rnaturalearth", "rnaturalearthdata")
 
 
 
