@@ -1,6 +1,8 @@
 install.packages("caret")
-library(lm)
-installed.packages("lm")
+library(lm.beta)
+install.packages("lm")
+
+install.packages("predict3d")
 
 # Load the necessary libraries
 source("Scripts/dataPrep.r")
@@ -15,7 +17,7 @@ train <- data[train_ind, ]
 test <- data[-train_ind, ]
 
 # Build the predictive model using the training data
-model <- train(target ~ ., data = train, method = "lm")
+model <- train(target ~ ., data = train, method = "lm.beta")
 
 # Make predictions on the test data
 predictions <- predict(model, test)

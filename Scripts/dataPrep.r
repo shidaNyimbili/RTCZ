@@ -20,6 +20,8 @@
 #                    "sysfonts","scales","magrittr","knitr","lubridate","Hmisc","haven","tidyr","reshape2","DescTools","extrafont",
 #                    "extrafontdb")
 
+install.packages()
+
 zam_packages <- c("tidyverse","here","gifski","gt","gtsummary","gghighlight","stringi","DT", "ggthemes","ggridges","viridis",
                   "psych","labelled","readxl", "skimr","sjlabelled","sjstats","sjPlot", "sjmisc","readr","ggrepel","openxlsx",
                   "sysfonts","scales","magrittr","knitr","lubridate","Hmisc","haven","tidyr","reshape2","DescTools","extrafont",
@@ -30,7 +32,7 @@ zam_packages <- c("tidyverse","here","gifski","gt","gtsummary","gghighlight","st
                   "shiny","rgeoboundaries", "nasapower", 
                   "leaflet", "ggsflabel", "sf","RSelenium", "netstat", "GGally", "calendR", "areaplot", "hexbin",
                   "webshot", "oceanis","writexl", "easypackages", "SPlit", "gsubfn", "proto","fpp", "mapview", "shinydashboard", "packrat",
-                  "gt", "bigD","formattable", "reactablefmtr", "scales","caret","predict3d")
+                  "gt", "bigD","formattable", "reactablefmtr", "scales","caret","predict3d","vroom")
 
 
 
