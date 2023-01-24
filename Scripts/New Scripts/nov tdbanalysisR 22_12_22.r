@@ -1,8 +1,12 @@
 
-library("tidyverse")
-library("lubridate")
+# library("tidyverse")
+# library("lubridate")
 
-tdb_data <- read_csv("Stata 4.csv")
+install.packages("vroom")
+
+source("scripts/dataPrep.r")
+
+tdb_data <- read_csv("Data/IHM/Stata4.csv")
 
 unique(tdb_data)
 
@@ -18,28 +22,25 @@ tdb_data.r <- tdb_data.r %>%
 
 tdb_data.r
 
-tdb_data.r <- tdb_data.r %>%
+tdb_data2 <- tdb_data.r %>%
   mutate(province=as.factor(province), facility_name=as.factor(facility_name), user_ips=as.factor(user_ips), 
          tdb_creation_date=as.Date(tdb_creation_date, format = "%m/%d/%Y"), 
          most_recent_interaction_date=as.Date(most_recent_interaction_date, format = "%m/%d/%Y"))
 
-tdb_data.r
+tdb_data
 
-tdb_data.r <- tdb_data.r %>%
-  mutate(month_tdb_created=month(tdb_creation_date))
+# tdb_data2 <- tdb_data2 %>% 
+#   separate(most_recent_interaction_date, into = c("Year","Month", "Day"))
+# 
+# 
+# tdb_data3 <- tdb_data2 %>% 
+#   mutate(Month = month.abb[as.numeric(Month)])
+# tdb_data3
+# 
+# tdb_data3$Date <- str_c(tdb_data3$Year, tdb_data3$Month, tdb_data3$Day, sep = "-")
+# 
+# tdb_data3
 
-tdb_data.r <- tdb_data.r %>%
-mutate(tdb_creation_date = str_sub(tdb_creation_date,
-                          # start=1,
-                          # end=nchar(tdb_creation_date)-5),
-       month = factor(tdb_creation_date,
-                      levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
-       month_code = as.numeric(month), 
-       year = str_sub(tdb_creation_date, 
-                      start=nchar(tdb_creation_date)-4,
-                      end=nchar(tdb_creation_date)),
-       monyr = paste(month_code, year, sep="-"),
-       mnthyr = my(monyr))
 
 tdb_data.r <- tdb_data.r %>%
   mutate(month_tdb_created=as.factor(month_tdb_created))
