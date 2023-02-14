@@ -29,45 +29,49 @@ tdb_data2 <- tdb_data.r %>%
 
 tdb_data
 
-# tdb_data2 <- tdb_data2 %>% 
-#   separate(most_recent_interaction_date, into = c("Year","Month", "Day"))
-# 
-# 
-# tdb_data3 <- tdb_data2 %>% 
-#   mutate(Month = month.abb[as.numeric(Month)])
-# tdb_data3
-# 
-# tdb_data3$Date <- str_c(tdb_data3$Year, tdb_data3$Month, tdb_data3$Day, sep = "-")
-# 
-# tdb_data3
+tdb_data2 <- tdb_data2 %>%
+  separate(most_recent_interaction_date, into = c("Year","Month", "Day"))
 
 
-tdb_data.r <- tdb_data.r %>%
-  mutate(month_tdb_created=as.factor(month_tdb_created))
+tdb_data3 <- tdb_data2 %>%
+  mutate(Month = month.abb[as.numeric(Month)])
+tdb_data3
 
-tdb_data.r
+tdb_data3$Date <- str_c(tdb_data3$Year, tdb_data3$Month, tdb_data3$Day, sep = "-")
 
-grph_province_ip <- ggplot(data = tdb_data.r) +
+tdb_data3
+
+tdb_data3 <- tdb_data3 %>%
+  mutate(Month=as.factor(Month))
+tdb_data3
+
+
+# tdb_data.r <- tdb_data.r %>%
+#   mutate(month_tdb_created=as.factor(month_tdb_created))
+# 
+# tdb_data.r
+
+grph_province_ip <- ggplot(data = tdb_data3) +
   geom_bar (mapping=aes(x=province, fill=user_ips))
+
+grph_province_ip
 
 #grph_ip_province <- ggplot(data = tdb_data.r) +
   #geom_bar (mapping=aes(x=user_ips, fill=province)) +
   #ggtitle("TDB Submission by Province & Implementing Partner | November 2022 Submission",
           #subtitle = "Source: TDB Submission Portal")
 
- ggplot(data = tdb_data.r) +
+ ggplot(data = tdb_data3) +
   geom_bar (mapping=aes(x=province, fill=user_ips)) +
-  ggtitle("TDB Submission by Province & Implementing Partner | January 2023 Submission",
-          subtitle = "Source: TDB Submission Portal") +
-  ylab("Number of TDBs") +
-  xlab("Province") 
+  ggtitle("TDB Submission by Province & Implementing Partner | January 2023 Submission") +
+   labs(x="Province", y="Number of TDBs", caption = "Data Source: TDB Submission Portal")
 
-ggplot(data = tdb_data.r) +
-  geom_bar (mapping=aes(x=user_ips, fill=month_tdb_created)) +
+ggplot(data = tdb_data3) +
+  geom_bar (mapping=aes(x=user_ips, fill=Month)) +
   ggtitle("TDB Submission by Implementing Partner & Creation Month | January 2023 Submission",
           subtitle = "Source: TDB Submission Portal") +
-  ylab("Number of TDBs") +
-  xlab("Implementing Partner") 
+  lab=ylab("Number of TDBs") +
+  xlab("Implementing Partner")
 
 grph_province_ip
 
