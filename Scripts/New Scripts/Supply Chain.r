@@ -20,7 +20,7 @@ sum(stk$month_chr!=stk$month) # expecting 0 if vars same
 
 stk
 
-install.packages("scales")
+# install.packages("scales")
 
 ###Rename the cell names of provinces
 stk$Province_Determine <- gsub("Luapula _% Availability","Luapula", stk$Province_Determine)
