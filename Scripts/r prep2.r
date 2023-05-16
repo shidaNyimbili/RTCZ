@@ -31,7 +31,7 @@ zam_packages <- c("tidyverse", "here", "gifski", "gt","gtsummary","gghighlight",
                   "leaflet", "ggsflabel", "sf", "RSelenium", "netstat", "GGally", "calendR", "areaplot", "hexbin",
                   "webshot", "oceanis", "SPlit", "gsubfn", "proto","fpp", "mapview", "shinydashboard", "packrat",
                   "gt", "bigD","formattable", "reactablefmtr", "scales", "caret","predict3d", "ggpmisc", "cowplot", 
-                  "googleway", "ggplot2", "ggrepel", "ggspatial", "libwgeom", "sf", "rnaturalearth", "rnaturalearthdata", "pacman", "vroom")
+                  "googleway", "ggplot2", "ggrepel", "ggspatial", "libwgeom", "sp", "rnaturalearth", "rnaturalearthdata", "pacman", "vroom", "rgdal","gridExtra")
 
 
 
@@ -68,7 +68,7 @@ base <- theme_bw() + theme(panel.grid.minor.x=element_blank(),
                            # legend.position = c(.73,.99),
                            # legend.justification = c("left", "top"),
                            # legend.box.just = "left",
-                           strip.text=element_text(size=13, family="Gill Sans Mt"),
+                           strip.text=element_text(size=11, family="Gill Sans Mt"),
                            panel.border=element_blank(),
                            axis.ticks = element_blank(),
                            legend.box="horizontal",
