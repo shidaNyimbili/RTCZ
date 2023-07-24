@@ -24,7 +24,7 @@ source("scripts/r prep2.r")
 
 
 
-perinatal.mort <- read_xlsx("data/prematurity/perinatal mortality rate.xlsx")
+perinatal.mort <- read_xlsx("Data/prematurity/perinatal mortality rate.xlsx")
 perinatal.mort
 perinatal.mort  <- perinatal.mort  %>%
   mutate(year = str_sub(period,
