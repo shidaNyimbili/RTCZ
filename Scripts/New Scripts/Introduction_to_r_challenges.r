@@ -1483,7 +1483,7 @@ ggplot(data = world) +
   geom_sf()
 
 # Interactive plots -------------------------------------------------------
-
+install.packages("plotly")
 library(plotly)
 
 ggplot(data = filter(survey_complete, country == "South Africa" & eye_color == "blue"),

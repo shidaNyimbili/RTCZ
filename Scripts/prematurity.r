@@ -88,7 +88,7 @@ ggplot(perinatal.mort5, aes(geometry = geometry, fill = rate)) +
                      , palette = "Burg") +
   labs(x="", y="", caption = "Data Source: PDSR",
        title = "Perinatal Mortality Rate, 2017-2022"
-       , subtitle = "Darker colors represent a higher proportion of mortality rate") + #for faceted and xy labels include x="Longitude", y="Latitude", +faceted
+       , subtitle = "Darker colors represent a higher proportion of mortality rate") + #for faceted and xy labels include x="Longitude", y="http://127.0.0.1:28939/graphics/plot_zoom_png?width=923&height=900Latitude", +faceted
   theme_void() +
   theme(plot.title.position = "plot",
         plot.title = element_text(size = 16, hjust=0.5, family="Gill Sans Mt", face="bold"),
