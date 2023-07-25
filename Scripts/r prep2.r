@@ -31,7 +31,9 @@ zam_packages <- c("tidyverse", "here", "gifski", "gt","gtsummary","gghighlight",
                   "leaflet", "ggsflabel", "sf", "RSelenium", "netstat", "GGally", "calendR", "areaplot", "hexbin",
                   "webshot", "oceanis", "SPlit", "gsubfn", "proto","fpp", "mapview", "shinydashboard", "packrat",
                   "gt", "bigD","formattable", "reactablefmtr", "scales", "caret","predict3d", "ggpmisc", "cowplot", 
-                  "googleway", "ggplot2", "ggrepel", "giscoR", "ggspatial", "sp", "rnaturalearth", "rnaturalearthdata", "pacman", "vroom", "rgdal","gridExtra")
+                  "googleway", "ggplot2", "caTools","ggrepel", "giscoR", "ggspatial", "sp", "glmnet", "rnaturalearth", 
+                  "rnaturalearthdata", "pacman", "vroom", "rgdal","gridExtra", "GGally","ggraph","igraph","Matrix","network",
+                  "quanteda", "sna","tidygraph","tm","tibble","quanteda.textplots")
 
 
 
