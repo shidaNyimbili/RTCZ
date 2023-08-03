@@ -159,7 +159,7 @@ data_l <- d %>%
       . == 3 ~ "Neutral",
       . == 4 ~ "Agree",
       . == 5 ~ "Strongly agree"),
-      levels = c("Strongly disagree","Disagree","Neutral","Agree", "Strongly agree", "No")
+      levels = c("Strongly disagree","Disagree","Neutral","Agree", "Strongly agree")
     )))
 
 likertplot <- plot(likert::likert(data_l),low.color = "#FF6665", high.color = "#5AB4AC", neutral.color.ramp = "white", 

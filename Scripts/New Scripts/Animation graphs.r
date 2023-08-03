@@ -1,9 +1,12 @@
-# Get data:
-library(gapminder)
+# # Get data:
+# library(gapminder)
+# 
+# # Charge libraries:
+# library(ggplot2)
+# library(gganimate)
 
-# Charge libraries:
-library(ggplot2)
-library(gganimate)
+source("scripts/r prep2.r")
+
 
 # Make a ggplot, but add frame=year: one image per year
 ggplot(gapminder, aes(gdpPercap, lifeExp, size = pop, color = continent)) +
@@ -16,5 +19,5 @@ ggplot(gapminder, aes(gdpPercap, lifeExp, size = pop, color = continent)) +
   ease_aes('linear')
 
 # Save at gif:
-anim_save("271-ggplot2-animated-gif-chart-with-gganimate1.gif"
+anim_save("271-ggplot2-animated-gif-chart-with-gganimate1.gif")
           
