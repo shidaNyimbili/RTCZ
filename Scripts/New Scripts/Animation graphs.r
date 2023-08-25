@@ -1,9 +1,3 @@
-# # Get data:
-# library(gapminder)
-# 
-# # Charge libraries:
-# library(ggplot2)
-# library(gganimate)
 
 source("scripts/r prep2.r")
 
@@ -27,6 +21,11 @@ dm1 <- dm + facet_wrap(~continent) +
   transition_time(year) +
   labs(title = "Year: {frame_time}")
 
+dm1
+
+
+
+
 gganimate::animate(dm1, nframes = 100, fps = 10, renderer = gifski_renderer())
 
 # Save at gif:
@@ -41,14 +40,14 @@ source("scripts/r prep2.r")
 
 provinces_zam <- st_read("Data/Updated Shapefiles/Updated_Province.shp")
 
-library(sf)
+#library(sf)
 
 # Check CRS of sf objects
-crs1 <- st_crs(provinces_zam)
+#crs1 <- st_crs(provinces_zam)
 #crs2 <- st_crs(sf_object2)
 
 # Print the CRS information
-print(crs1)
+#print(crs1)
 #print(crs2)
 
 
@@ -153,8 +152,25 @@ ggplot(perinatal.mort5, aes(geometry = geometry, fill = rate)) +
         strip.text=element_text(size=14, family="Gill Sans Mt"))
 
 perinatal.mort5
+perinatal.mort5 <- st_transform(perinatal.mort5, crs = st_crs(perinatal.mort5))
 
-library(sf)
+perinatal.mort5$yr <- as.Date(as.character(perinatal.mort5$yr), format = "%Y")
+
+perinatal.mort5
+
+
+##Maps
+# Make a ggplot, but add frame=year: one image per year
+dm <- ggplot(perinatal.mort5, aes(geometry = geometry, fill = rate, color = rate)) +
+  #geom_point() +
+  scale_x_log10() +
+  theme_bw() +
+  # gganimate specific bits:
+  labs(title = 'Year: {yr}', x = 'GDP per capita', y = 'life expectancy') +
+  transition_time(yr) +
+  ease_aes('linear')
+
+dm
 
 # Transform sf_object2 to match the CRS of sf_object1
 perinatal.mort5 <- st_transform(perinatal.mort5, crs = st_crs(perinatal.mort5))
@@ -194,10 +210,7 @@ ggplot(perinatal.mort6, aes(geometry = geometry, fill = rate)) +
         legend.text = element_text(size = 12),
         legend.title=element_blank(),
         legend.position="right",
-        strip.text=element_text(size=14, family="Gill Sans Mt")) + transition_time(yr) +
-  ease_aes('linear')
-
-
+        strip.text=element_text(size=14, family="Gill Sans Mt"))
 ####Animation map v3
 
 # Install packages if not already installed
@@ -292,5 +305,15 @@ gganimate::animate(base_plot, nframes = 100, fps = 10, renderer = gifski_rendere
 # To save the animation to a file (e.g., GIF)
 # anim_save("performance_animation.gif")
 
-install.packages('maps')
+install.packages('elevatr')
 
+
+###New idea
+
+library(rnaturalearth)
+library(elevatr)
+library(terra)
+map <- ne_countries(type = "countries", country = "Zambia",
+                    scale = "medium", returnclass = "sf")
+d <- get_elev_raster(locations = map, z = 9, clip = "locations")
+terra::plot(rast(d), plg = list(title = "Elevation (m)"))
