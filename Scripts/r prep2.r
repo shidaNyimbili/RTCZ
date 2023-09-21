@@ -33,7 +33,7 @@ zam_packages <- c("tidyverse", "here", "gifski", "gt","gtsummary","gghighlight",
                   "gt", "bigD","formattable", "reactablefmtr", "scales", "caret","predict3d", "ggpmisc", "cowplot", 
                   "googleway", "ggplot2", "caTools","ggrepel", "giscoR", "ggspatial", "sp", "glmnet", "rnaturalearth", 
                   "rnaturalearthdata", "pacman", "vroom", "rgdal","gridExtra", "GGally","ggraph","igraph","Matrix","network",
-                  "quanteda", "sna","maps", "elevatr", "igraph", "rnaturalearth", "terra","likert", "transformr", "tidygraph","tm","tibble","quanteda.textplots","spData")
+                  "quanteda", "sna","maps", "elevatr", "sfdep","spdep","igraph", "rnaturalearth", "terra","likert", "transformr", "tidygraph","tm","tibble","quanteda.textplots","spData")
 
 
 
@@ -79,7 +79,7 @@ base <- theme_bw() + theme(panel.grid.minor.x=element_blank(),
 
 baseX <- theme(plot.title = element_text(size = 15),
   plot.caption = element_text(size=12,family="Gill Sans Mt", face="bold"),
-  axis.title.x = element_text(size = 10),
+  axis.title.x = element_text(size = 12),
   axis.title.y = element_text(size = 12,family="Gill Sans Mt", face="bold"),
   axis.text.x = element_text(size = 12, family="Gill Sans Mt", face="bold"),
   axis.text.y = element_text(size = 12, family="Gill Sans Mt", face="bold"),
