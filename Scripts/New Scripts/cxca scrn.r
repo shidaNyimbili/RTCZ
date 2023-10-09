@@ -69,8 +69,10 @@ ggplot(si.1, aes(x = mnthyr, y = val, fill = prov)) +
   scale_fill_manual(values = usaid_palette) + # Specify custom colors
   scale_y_continuous(labels = comma) +
   scale_x_date(date_labels = "%b %y", date_breaks = "1 months") +
-  labs(x = "", y = "Number of Women screened", caption = "Data Source: RTCZ Insight", title = "Monthly numbers of Women screened for CXCA") +
-  theme_minimal()
+  labs(x = "", y = "Number of Women screened", caption = "Data Source: RTCZ Insight", title = "Monthly numbers of Women screened for CXCA has increased \nin the last two months in Luapula province, while in Muchinga & Northern they have declined") +
+  #theme_minimal()
+  #baseC
+  basem
 
 
 
@@ -78,7 +80,7 @@ ggplot(si.1, aes(x = mnthyr, y = val, fill = prov)) +
 #Bar Charts without labels
 ggplot(si.1, aes(x = mnthyr, y = val, fill = prov)) +
   geom_bar(stat = "identity", position = "dodge") +
-  #geom_text(aes(label = val), vjust = 1, size = 3, position = position_dodge(width = 0.9)) + # Adjust vjust to place labels on top of bars
+  geom_text(aes(label = val), vjust = 1, size = 3, position = position_dodge(width = 0.9)) + # Adjust vjust to place labels on top of bars
   scale_fill_manual(name = "Provinces:", values = usaid_palette6) + # Specify custom colors
   scale_y_continuous(labels = comma) +
   faceted +
@@ -87,12 +89,23 @@ ggplot(si.1, aes(x = mnthyr, y = val, fill = prov)) +
   base
   #theme_minimal()
 
-
 ggsave("Viz/RTC/project CXCA scrns barcharts without labels.png",
        device="png",
        type="cairo",
        height=7,
        width=12)
+
+###Put labels on all bar charts
+ggplot(si.1, aes(x = mnthyr, y = val, fill = prov)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  geom_text(aes(label = val, group = prov), position = position_dodge(width = 2), vjust = -0.5, size = 3) + # Use position_dodge() to align labels with dodged bars
+  scale_fill_manual(name = "Provinces:", values = usaid_palette6) + # Specify custom colors
+  scale_y_continuous(labels = comma) +
+  scale_x_date(date_labels = "%b %y", date_breaks = "1 months") +
+  labs(x = "", y = "Number of Women screened", caption = "Data Source: RTCZ Insight", title = "Monthly numbers of Women screened for CXCA has increased \nin the last two months in Luapula province, while in Muchinga & Northern they have declined") +
+  theme_minimal()
+
+
 
 ###Trend line
 # Load required libraries
@@ -143,7 +156,7 @@ ggplot(si.1, aes(x = mnthyr, y = val, group = Provinces, color = Provinces)) +
   faceted +
   scale_y_continuous(labels = comma) +
   scale_x_date(date_labels = "%b %y", date_breaks = "2 months") +
-  labs(x = "", y = "Number of Women screened", caption = "Data Source: RTCZ Insight", title = "Trend of Women screened for CXCA by Province") +
+  labs(x = "", y = "Number of Women screened", caption = "Data Source: RTCZ Insight", title = "Monthly numbers of Women screened for CXCA has increased \nin the last two months in Luapula province, while in Muchinga & Northern they have declined") +
   baseX
   #theme_minimal()
 
