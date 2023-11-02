@@ -13,6 +13,7 @@ if (!requireNamespace("scales", quietly = TRUE)) {
 # Load the required libraries
 library(ggplot2)
 library(scales)
+library(tidyr)
 
 # Create a data frame with the provided data
 data <- data.frame(
@@ -22,25 +23,41 @@ data <- data.frame(
   Linkage_Percentage = c(100, 98, 98, 97, 97, 100, 101, 100, 99, 98, 96)
 )
 
-df <- gather(df, indicators, total, Total_HTS_TST_POS:Total_HTS_TST) #Create long format
+library(tidyr)
+
+# Check the structure of your dataframe
+str(data)
+
+# Use gather to create a long format
+data <- gather(data, indicators, value, Total_HTS_TST_POS:Total_HTS_TST)
 
 data
 
-
-# Create the combo graph with bars and a secondary axis for percentages
-ggplot(data, aes(x = Quarters)) +
-  geom_bar(aes(y = Total_HTS_TST_POS, fill = "Total HTS Tests Positive"), position ='dodge' , stat = "identity") +
-  geom_bar(aes(y = Total_HTS_TST, fill = "Total HTS Tests"), stat = "identity",position ='dodge') +
-  #geom_line(aes(y = Linkage_Percentage*1101, group = 1, fill= "Linkage (%) Overall"), size = 1) +
-  #scale_y_continuous(sec.axis = sec_axis(~.*0.00001, 
-                                         ##labels = percent)) +
+plot <- ggplot(data, aes(Quarters, value, fill=indicators))
+plot <- plot + geom_bar(stat = "identity", position = 'dodge') +
   labs(title = "",
-       x = "Quarters",
-       y = "Values",
-       fill = "Legend",
-       caption = "Data source: Action HIV Project") +
-  scale_fill_manual(values = c("Total HTS Tests Positive" = light_blue, "Total HTS Tests" = web_blue, "Linkage (%) Overall" = rich_black)) +
+     x = "Quarters",
+     y = "Values",
+     fill = "Legend",
+     caption = "Data source: Action HIV Project")
+
+plot
+# # Create the combo graph with bars and a secondary axis for percentages
+# ggplot(data, aes(x = Quarters)) +
+#   geom_bar(aes(y = Total_HTS_TST_POS, fill = "Total HTS Tests Positive"), position ='dodge' , stat = "identity") +
+#   geom_bar(aes(y = Total_HTS_TST, fill = "Total HTS Tests"), stat = "identity",position ='dodge') +
+#   #geom_line(aes(y = Linkage_Percentage*1101, group = 1, fill= "Linkage (%) Overall"), size = 1) +
+#   #scale_y_continuous(sec.axis = sec_axis(~.*0.00001, 
+#                                          ##labels = percent)) +
+
+labs(title = "",
+     x = "Quarters",
+     y = "Values",
+     fill = "Legend",
+     caption = "Data source: Action HIV Project") +
+  
   scale_color_manual(values = c("Linkage (%) Overall" = rich_black)) +
   theme_minimal() +
   theme(legend.position = "top")
+  
 
