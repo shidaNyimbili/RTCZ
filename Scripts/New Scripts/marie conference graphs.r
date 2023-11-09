@@ -121,7 +121,7 @@ data
 plot <- ggplot(data, aes(x = Period, y = value, fill = indicators)) +
   geom_bar(stat = "identity", position = "dodge") +
   #geom_text(aes(label = ifelse(indicators == "HIV_POS_YIELD", scales::percent(value / 100), scales::comma(value)), vjust = -0.5), position = position_dodge(0.9)) +
-  #geom_point(data = data[data$indicators == "HIV_POS_YIELD", ], aes(x = Period, y = value * 6000), color = light_blue, size = 3) +
+  geom_point(data = data[data$indicators == "HIV_POS_YIELD", ], aes(x = Period, y = value * 6000), color = light_blue, size = 3) +
   geom_text(aes(label = ifelse(indicators != "HIV_POS_YIELD", scales::comma(value), "")), vjust = -0.5, position = position_dodge(0.9)) +
   geom_line(data = data[data$indicators == "HIV_POS_YIELD", ], aes(x = Period, y = value * 6000, group = 2, label = scales::percent(value /100)), color = light_blue,size=1) +
   labs(
@@ -144,14 +144,14 @@ plot <- ggplot(data, aes(x = Period, y = value, fill = indicators)) +
 print(plot)
 
 
-ggsave("Viz/RTC/overallHTS.png",
+ggsave("Viz/RTC/overallHTS2.png",
        device="png",
        type="cairo",
        height=7,
        width=12)
 
 
-##Last one
+Legend##Last one
 #'*Last one*
 data <- data.frame(
 Facility =c("Chinsali_DH","Buntungwa","Chembe","Kabuta","Senama","Kashikishi","Samfya_StageII","Nchelenge","Munkanta","Kazembe","StPaulsMission","Namukolo","Mansa_GH","Chisanga","Central_Clinic","Mbereshi_Mission","Tazara_Res","Kawambwa_DH","Mpepo"),
