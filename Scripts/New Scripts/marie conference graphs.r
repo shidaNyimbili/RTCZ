@@ -125,7 +125,7 @@ plot <- ggplot(data, aes(x = Period, y = value, fill = indicators)) +
   geom_text(aes(label = ifelse(indicators != "HIV_POS_YIELD", scales::comma(value), "")), vjust = -0.5, position = position_dodge(0.9)) +
   geom_line(data = data[data$indicators == "HIV_POS_YIELD", ], aes(x = Period, y = value * 6000, group = 2, label = scales::percent(value /100)), color = light_blue,size=1) +
   labs(
-    title = "Overall HTS_TST Performance Trend Before & After Lynx rollout",
+    title = "Overall HIV Testing Performance Trend Before & After Lynx rollout",
     x = "Period",
     y = "Values",
     fill = "Legend",
@@ -154,9 +154,9 @@ ggsave("Viz/RTC/overallHTS2.png",
 Legend##Last one
 #'*Last one*
 data <- data.frame(
-Facility =c("Chinsali_DH","Buntungwa","Chembe","Kabuta","Senama","Kashikishi","Samfya_StageII","Nchelenge","Munkanta","Kazembe","StPaulsMission","Namukolo","Mansa_GH","Chisanga","Central_Clinic","Mbereshi_Mission","Tazara_Res","Kawambwa_DH","Mpepo"),
-HIV_Pos_yield_2019 =c(38,17,35,24,24,26,29,25,21,27,6,20,13,13,20,16,16,2,8),
-HIV_Pos_Yield_2022 =c(75,67,63,55,49,40,39,35,35,34,26,25,23,22,22,21,20,19,16)
+Facility =c("Chinsali_DH","Buntungwa","Chembe","Kabuta","Senama","Kashikishi","Samfya_StageII","Nchelenge","Munkanta","Kazembe","StPaulsMission","Namukolo","Mansa_GH","Chisanga","Central_Clinic","Mbereshi_Mission","Tazara_Res","Kawambwa_DH","Mpepo","Overall"),
+HIV_Pos_yield_2019 =c(38,17,35,24,24,26,29,25,21,27,6,20,13,13,20,16,16,2,8,7),
+HIV_Pos_Yield_2022 =c(75,67,63,55,49,40,39,35,35,34,26,25,23,22,22,21,20,19,16,16)
 )
 
 data <- gather(data, key = "indicators", value = "value", -Facility)
@@ -187,6 +187,7 @@ ggsave("Viz/RTC/HTS_TST_Per.png",
 
 ####Performance
 # Load the required libraries
+#'WORKING'
 
 
 # Load the required libraries
@@ -195,10 +196,9 @@ library(scales)
 
 # Create the data frame
 data <- data.frame(
-  Facility = c("Chinsali_DH", "Buntungwa", "Chembe", "Kabuta", "Senama", "Kashikishi", "Samfya_StageII", "Nchelenge", "Munkanta", "Kazembe", "StPaulsMission", "Namukolo", "Mansa_GH", "Chisanga", "Central_Clinic", "Mbereshi_Mission", "Tazara_Res", "Kawambwa_DH", "Mpepo"),
-  HIV_Pos_yield_2019 = c(38, 17, 35, 24, 24, 26, 29, 25, 21, 27, 6, 20, 13, 13, 20, 16, 16, 2, 8),
-  HIV_Pos_Yield_2022 = c(75, 67, 63, 55, 49, 40, 39, 35, 35, 34, 26, 25, 23, 22, 22, 21, 20, 19, 16)
-)
+  Facility =c("Chinsali_DH","Buntungwa","Chembe","Kabuta","Senama","Kashikishi","Samfya_StageII","Nchelenge","Munkanta","Kazembe","StPaulsMission","Namukolo","Mansa_GH","Chisanga","Central_Clinic","Mbereshi_Mission","Tazara_Res","Kawambwa_DH","Mpepo","Overall"),
+  HIV_Pos_yield_2019 =c(38,17,35,24,24,26,29,25,21,27,6,20,13,13,20,16,16,2,8,7),
+  HIV_Pos_Yield_2022 =c(75,67,63,55,49,40,39,35,35,34,26,25,23,22,22,21,20,19,16,16))
 
 # Reshape the data to long format
 data_long <- gather(data, key = "Year", value = "Value", -Facility)
@@ -226,21 +226,36 @@ ggsave("Viz/RTC/HTS_TST_Per.png",
        height=7,
        width=12)
 
+
+###11.11.2023
 # Load the required libraries
 library(ggplot2)
 library(scales)
 
+# Define the order of facilities
+facility_order <- c(
+  "Chinsali_DH", "Buntungwa", "Chembe", "Kabuta", "Senama", 
+  "Kashikishi", "Samfya_StageII", "Nchelenge", "Munkanta", "Kazembe", 
+  "StPaulsMission", "Namukolo", "Mansa_GH", "Chisanga", "Central_Clinic", 
+  "Mbereshi_Mission", "Tazara_Res", "Kawambwa_DH", "Mpepo", "Overall"
+)
+
 # Create the data frame
 data <- data.frame(
-  Facility = c("Chinsali_DH", "Buntungwa", "Chembe", "Kabuta", "Senama", "Kashikishi", "Samfya_StageII", "Nchelenge", "Munkanta", "Kazembe", "StPaulsMission", "Namukolo", "Mansa_GH", "Chisanga", "Central_Clinic", "Mbereshi_Mission", "Tazara_Res", "Kawambwa_DH", "Mpepo"),
-  HIV_Pos_yield_2019 = c(38, 17, 35, 24, 24, 26, 29, 25, 21, 27, 6, 20, 13, 13, 20, 16, 16, 2, 8),
-  HIV_Pos_Yield_2022 = c(75, 67, 63, 55, 49, 40, 39, 35, 35, 34, 26, 25, 23, 22, 22, 21, 20, 19, 16)
+  Facility = factor(c(
+    "Chinsali_DH","Buntungwa","Chembe","Kabuta","Senama",
+    "Kashikishi","Samfya_StageII","Nchelenge","Munkanta","Kazembe",
+    "StPaulsMission","Namukolo","Mansa_GH","Chisanga","Central_Clinic",
+    "Mbereshi_Mission","Tazara_Res","Kawambwa_DH","Mpepo","Overall"
+  ), levels = facility_order),
+  HIV_Pos_yield_2019 =c(38,17,35,24,24,26,29,25,21,27,6,20,13,13,20,16,16,2,8,7),
+  HIV_Pos_Yield_2022 =c(75,67,63,55,49,40,39,35,35,34,26,25,23,22,22,21,20,19,16,16)
 )
 
 # Reshape the data to long format
 data_long <- gather(data, key = "Year", value = "Value", -Facility)
 
-# Create a bar chart with rotated x-axis labels
+# Create a bar chart
 plot <- ggplot(data_long, aes(x = Facility, y = Value, fill = Year)) +
   geom_bar(stat = "identity", position = "dodge") +
   geom_text(aes(label = scales::percent(Value / 100), vjust = -0.5), position = position_dodge(0.9)) +
@@ -251,11 +266,212 @@ plot <- ggplot(data_long, aes(x = Facility, y = Value, fill = Year)) +
     fill = "Year",
     caption = "Data source: Action HIV Project"
   ) +
-  scale_fill_manual(values = c("HIV_Pos_yield_2019" = "blue", "HIV_Pos_Yield_2022" = "red")) +
-  scale_y_continuous(labels = scales::percent_format(scale = 1)) +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Rotate x-axis labels by 45 degrees
+  scale_fill_manual(values = c("HIV_Pos_yield_2019" = usaid_blue, "HIV_Pos_Yield_2022" = usaid_red)) +
+  scale_y_continuous(labels = scales::percent_format(scale = 1)) + Angle
 
 # Display the plot
 print(plot)
+
+
+# Save the plot using the png() function
+png("Viz/RTC/positivity2.png", height = 7, width = 12, type = "cairo")
+print(plot)
+dev.off()
+
+
+ggsave("Viz/RTC/positivity.png",
+       device="png",
+       type="cairo",
+       height=7,
+       width=12)
+
+
+#FINAL GRAPH
+#Load the required libraries
+library(ggplot2)
+library(scales)
+
+# Define the order of facilities
+facility_order <- c(
+  "Chinsali_DH", "Buntungwa", "Chembe", "Kabuta", "Senama", 
+  "Kashikishi", "Samfya_StageII", "Nchelenge", "Munkanta", "Kazembe", 
+  "StPaulsMission", "Namukolo", "Mansa_GH", "Chisanga", "Central_Clinic", 
+  "Mbereshi_Mission", "Tazara_Res", "Kawambwa_DH", "Mpepo", "Overall"
+)
+
+# Create the data frame
+data <- data.frame(
+  Facility = factor(c(
+    "Chinsali_DH","Buntungwa","Chembe","Kabuta","Senama",
+    "Kashikishi","Samfya_StageII","Nchelenge","Munkanta","Kazembe",
+    "StPaulsMission","Namukolo","Mansa_GH","Chisanga","Central_Clinic",
+    "Mbereshi_Mission","Tazara_Res","Kawambwa_DH","Mpepo","Overall"
+  ), levels = facility_order),
+  HIV_Pos_yield_2019 =c(38,17,35,24,24,26,29,25,21,27,6,20,13,13,20,16,16,2,8,7),
+  HIV_Pos_Yield_2022 =c(75,67,63,55,49,40,39,35,35,34,26,25,23,22,22,21,20,19,16,16)
+)
+
+# Reshape the data to long format
+data_long <- gather(data, key = "Year", value = "Value", -Facility)
+
+# Round the values to remove decimal points
+data_long$Value <- round(data_long$Value)
+
+# Create a bar chart
+plot <- ggplot(data_long, aes(x = Facility, y = Value, fill = Year)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  geom_text(aes(label = paste0(Value, "%"), vjust = -0.5), position = position_dodge(0.9)) +
+  labs(
+    title = "HIV Positivity Yield Trend - Selected Facilities",
+    x = "Facility",
+    y = "Values (%)",  # Updated y-axis label
+    fill = "Year",
+    caption = "Data source: Action HIV Project"
+  ) +
+  scale_fill_manual(values = c("HIV_Pos_yield_2019" = usaid_blue, "HIV_Pos_Yield_2022" = usaid_red)) +
+  scale_y_continuous(labels = scales::percent_format(scale = 1)) + Angle# Set y-axis labels to percentages
+
+# Display the plot
+print(plot)
+
+ggsave("Viz/RTC/positivity.png",
+       device="png",
+       type="cairo",
+       height=7,
+       width=12)
+
+
+
+###more
+library(ggplot2)
+library(scales)
+
+# Define the order of facilities
+facility_order <- c(
+  "Chinsali_DH", "Buntungwa", "Chembe", "Kabuta", "Senama", 
+  "Kashikishi", "Samfya_StageII", "Nchelenge", "Munkanta", "Kazembe", 
+  "StPaulsMission", "Namukolo", "Mansa_GH", "Chisanga", "Central_Clinic", "Overall"
+)
+
+# Create the data frame
+data <- data.frame(
+  Facility = factor(c(
+    "Chinsali_DH","Buntungwa","Chembe","Kabuta","Senama",
+    "Kashikishi","Samfya_StageII","Nchelenge","Munkanta","Kazembe",
+    "StPaulsMission","Namukolo","Mansa_GH","Chisanga","Central_Clinic","Overall"
+  ), levels = facility_order),
+  HIV_Pos_Yield_2019 =c(38,17,35,24,24,26,29,25,21,27,6,20,13,13,20,23),
+  HIV_Pos_Yield_2020 =c(75,67,63,55,49,40,39,35,35,34,26,25,23,22,22,40),
+  HIV_Pos_Yield_2021 =c(86,72,69,62,63,72,71,71,67,67,64,60,59,50,50,53)
+)
+
+# Reshape the data to long format
+data_long <- gather(data, key = "Year", value = "Value", -Facility)
+
+# Round the values to remove decimal points
+data_long$Value <- round(data_long$Value)
+
+# Create a bar chart
+plot <- ggplot(data_long, aes(x = Facility, y = Value, fill = Year)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  geom_text(aes(label = paste0(Value, "%"), vjust = -0.5), position = position_dodge(0.9)) +
+  labs(
+    title = "HIV Positivity Trend - Selected facilities",
+    x = "Facility",
+    y = "Values (%)",  # Updated y-axis label
+    fill = "Year",
+    caption = "Data source: Action HIV Project"
+  ) +
+  scale_fill_manual(
+    values = c("HIV_Pos_Yield_2019" = light_blue, "HIV_Pos_Yield_2020" = usaid_blue, "HIV_Pos_Yield_2021" = usaid_red),
+    labels = c("HIV Pos Yield 2019", "HIV Pos Yield 2020", "HIV Pos Yield 2021")
+  ) +
+  scale_y_continuous(labels = scales::percent_format(scale = 1)) +
+  theme(legend.text = element_text()) + Angle
+
+
+plot
+
+ggsave("Viz/RTC/positivity.png",
+       device="png",
+       type="cairo",
+       height=7,
+       width=12)
+###Overall Testing
+library(tidyr)
+library(ggplot2)
+library(scales)
+
+# Create the data frame
+data <- data.frame(
+  Period = c("2019", "2020", "2021"),
+  HTS_TST = c(140808, 113779, 89266),
+  HTS_TST_POS = c(9856, 12519, 12702),
+  HIV_POS_YIELD = c(7, 11, 14)
+)
+
+# Reshape the data to long format
+data <- gather(data, key = "indicators", value = "value", -Period)
+
+# Remove underscores from the legend labels
+legend_labels <- c("HTS TST", "HTS TST POS", "HIV POS YIELD")
+
+# Create a combo graph
+plot <- ggplot(data, aes(x = Period, y = value, fill = indicators)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  geom_point(data = data[data$indicators == "HIV_POS_YIELD", ], aes(x = Period, y = value * 6000), color = light_blue, size = 3) +
+  geom_text(aes(label = ifelse(indicators != "HIV_POS_YIELD", scales::comma(value), "")), vjust = -0.5, position = position_dodge(0.9)) +
+  geom_line(data = data[data$indicators == "HIV_POS_YIELD", ], aes(x = Period, y = value * 6000, group = 2, label = scales::percent(value /100)), color = light_blue, size = 1) +
+  labs(
+    title = "Overall HIV Testing Performance Trend Before & After Lynx rollout",
+    x = "Period",
+    y = "Values",
+    fill = "Legend",
+    caption = "Data source: Action HIV Project"
+  ) +
+  scale_fill_manual(
+    values = c("HTS_TST" = usaid_blue, "HTS_TST_POS" = usaid_red, "HIV_POS_YIELD" = light_blue),
+    labels = legend_labels
+  ) + 
+  scale_y_continuous(labels = comma,
+                     sec.axis = sec_axis(
+                       ~ . / 6000,
+                       name = "HIV Positivity",
+                       labels = scales::percent_format(scale = 1)
+                     )
+  ) + basey
+
+# Display the plot
+print(plot)
+
+ggsave("Viz/RTC/overallHTS3.png",
+       device="png",
+       type="cairo",
+       height=7,
+       width=12)
+
+
+
+##averages
+
+# Create a matrix with the given data
+# Create a matrix with the given data
+hiv_data <- matrix(c(
+  38, 17, 35, 24, 24, 26, 29, 25, 21, 27, 6, 20, 13, 13, 20,
+  75, 67, 63, 55, 49, 40, 39, 35, 35, 34, 26, 25, 23, 22, 22,
+  86, 72, 69, 62, 63, 72, 71, 71, 67, 67, 64, 60, 59, 50, 50
+), nrow = 3, byrow = TRUE)
+
+# Convert the matrix to a data frame
+hiv_df <- as.data.frame(hiv_data)
+
+# Add row names for better identification
+row.names(hiv_df) <- c("Facility 1", "Facility 2", "Facility 3")
+
+# Calculate the average for each row
+average_values <- rowMeans(hiv_df)
+
+# Print the average values
+cat("Average Values for Each Row:\n")
+cat(average_values, "\n")
 

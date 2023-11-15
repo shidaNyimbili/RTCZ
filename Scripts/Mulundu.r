@@ -47,8 +47,7 @@ plot
 #   geom_bar(aes(y = Total_HTS_TST_POS, fill = "Total HTS Tests Positive"), position ='dodge' , stat = "identity") +
 #   geom_bar(aes(y = Total_HTS_TST, fill = "Total HTS Tests"), stat = "identity",position ='dodge') +
 #   #geom_line(aes(y = Linkage_Percentage*1101, group = 1, fill= "Linkage (%) Overall"), size = 1) +
-#   #scale_y_continuous(sec.axis = sec_axis(~.*0.00001, 
-#                                          ##labels = percent)) +
+#   #scale_y_continuous(labels = percent) +
 
 labs(title = "",
      x = "Quarters",
