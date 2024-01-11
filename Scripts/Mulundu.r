@@ -58,5 +58,5 @@ labs(title = "",
   scale_color_manual(values = c("Linkage (%) Overall" = rich_black)) +
   theme_minimal() +
   theme(legend.position = "top")
-  
+plot  
 

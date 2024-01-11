@@ -113,7 +113,7 @@ basey <- theme(plot.title = element_text(size = 16),
   axis.text.y = element_text(size = 14),
   legend.text = element_text(size = 14),
   legend.title=element_blank(),
-  legend.position="bottom",
+  legend.position="right",
   strip.text=element_text(size=14, family="Gill Sans Mt"),
   legend.background = element_rect(fill = "white", color = "black"))
 

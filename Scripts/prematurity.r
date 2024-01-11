@@ -1,29 +1,7 @@
 
 source("scripts/r prep2.r")
 
-# devtools::install_github("yutannihilation/ggsflabel")
-# remotes::install_github("cardiomoon/predict3d")
-# install.packages('sf',depend=T)
-# install.packages('lwgeom',depend=T)
-# install.packages("devtools")
-# if (!require("devtools")) install.packages("devtools")
-# devtools::install_github("talgalili/d3heatmap")
-# 
-# install.packages('libwgeom',depend=T)
-# install.packages(c("cowplot","googleway","ggplot2","ggrepel","ggspatial","libwgeom","sf","rnaturalearth","rnaturalearthdata"))
-# 
-# install.packages("d3heatmap", lib = "C:/R/R-4.2.3/library")
-# 
-# install.packages("remotes")
-# devtools::install_github("thomasp85/patchwork")
-
-# remotes::install_gitlab("dickoa/rgeoboundaries")
-# 
-# install.packages("easypackages")
-
-
-
-
+provinces_zam <- st_read("Data/Updated Shapefiles/Updated_Province.shp")
 perinatal.mort <- read_xlsx("Data/prematurity/perinatal mortality rate.xlsx")
 perinatal.mort
 perinatal.mort  <- perinatal.mort  %>%
@@ -48,19 +26,19 @@ perinatal.mort3 <- perinatal.mort2 %>%
 
 perinatal.mort3
 
-zam.boundary <- geoboundaries(country = "Zambia"
-                              , adm_lvl = 1) %>% 
-  select(shapeName)
+#zam.boundary <- geoboundaries(country = "Zambia"
+                              #, adm_lvl = 1) %>% 
+  #select(shapeName)
 
-zam.boundary
+#zam.boundary
 
 #write_xlsx(zam.boundary,"data/prematurity/province.xlsx")
 
-zam.boundary1 <- zam.boundary %>%
+  provinces_zam1 <- provinces_zam %>%
   select(1, 2) %>%
   na.omit()
 
-zam.boundary1
+provinces_zam1
 
 
 map_colors <- carto_pal(name = "Burg")
@@ -73,8 +51,8 @@ perinatal.mort4 <- perinatal.mort3 %>%
 perinatal.mort4
 
 perinatal.mort5 <- left_join(perinatal.mort4
-                      , zam.boundary1
-                      , by = c("prov" = "shapeName")) %>%
+                      , provinces_zam1
+                      , by = c("prov" = "PROVINCE")) %>%
   sf::st_as_sf()
 
 perinatal.mort5
