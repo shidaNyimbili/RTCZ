@@ -22,6 +22,7 @@ y
 #In the right-hand one, plot the natural logarithm of y against x, using open (unfilled) black circles.
 #Use base R or `ggplot2` (your choice!).
 
+#'*Note here i have plotted using Base R*
 # Create the plots
 par(mfrow = c(1, 2))  # Arrange plots side-by-side
 
@@ -33,23 +34,45 @@ plot(x, y, type = "p", pch = 16, col = "black", main = "y vs x",
 plot(x, log(y), type = "p", pch = 1, col = "black", main = "log(y) vs x",
      xlab = "x", ylab = "log(y)")
 
+#saving the plot
+filepath <- "viz/Dingani/pointplots2.png"
+dev.copy(png, filename = filepath, width = 13, height = 6, units = 'in', res = 300)
+
+# Close the current plotting device
+#dev.off()
+
 #4. For bonus marks, remake the same above two plots, but this time plot a
 #smooth curve in each case instead of plotting the data points as a dots (circles). Use Google or R help files to figure it out!
 # Bonus: Smooth curve instead of plotting data points
-# Left plot with smooth curve
-# Create the plots
-par(mfrow = c(1, 2))  # Arrange plots side-by-side
+
+#'*Here i will use ggplot2*
+#'*Reason is just show you both approaches*
+
+
+# Create data frames for ggplot to work
+y <- exp(x)
+data1 <- data.frame(x = x, y = y)
+data2 <- data.frame(x = x, log_y = log(y))
 
 # Left plot: y against x with smooth curve
-plot(x, y, type = "l", col = "blue", main = "y vs x (Smooth Curve)",
-     xlab = "x", ylab = "y")
+p1 <- ggplot(data1, aes(x = x, y = y)) +
+  geom_line(color = "black") +
+  labs(title = "y vs x", x = "x", y = "y") +
+  theme(panel.border = element_rect(color = "black", fill = NA, size = 1))
 
 # Right plot: natural logarithm of y against x with smooth curve
-plot(x, log(y), type = "l", col = "red", main = "log(y) vs x (Smooth Curve)",
-     xlab = "x", ylab = "log(y)")
+p2 <- ggplot(data2, aes(x = x, y = log_y)) +
+  geom_line(color = "red") +
+  labs(title = "log(y) vs x", x = "x", y = "log(y)") +
+  theme(panel.border = element_rect(color = "black", fill = NA, size = 1))
 
+p1 + p2 + plot_layout(guides = "collect")
 
-ggsave("viz/Dingani/smooth plots.png",
+# # Save the plots
+# filepath <- "viz/Dingani/smooth_plots.png"
+# ggsave(filename = filepath, plot = arrangeGrob(p1, p2, ncol = 2), width = 13, height = 6)
+
+ggsave("viz/Dingani/smoothplots.png",
        device="png",
        type="cairo",
        height = 6.0,
