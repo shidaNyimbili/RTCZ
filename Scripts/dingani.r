@@ -234,3 +234,9 @@ plt2 <- ggplot(dat.random, aes(x = log_random)) +
   theme_minimal()
 
 plt1 + plt2 + plot_layout(guides = "collect")
+
+ggsave("viz/Dingani/random.png",
+       device="png",
+       type="Cairo",
+       height = 6.0,
+       width = 13)
