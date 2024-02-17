@@ -35,7 +35,7 @@ plot(x, log(y), type = "p", pch = 1, col = "black", main = "log(y) vs x",
      xlab = "x", ylab = "log(y)")
 
 #saving the plot
-filepath <- "viz/Dingani/pointplots2.png"
+filepath <- "viz/Dingani/pointplots1.png"
 dev.copy(png, filename = filepath, width = 13, height = 6, units = 'in', res = 300)
 
 #dev.off()
@@ -81,7 +81,7 @@ mDat <- read_xlsx("Data/Dingani/mDat.xlsx")
 
 # # Select relevant columns and handle missing/blank cells
  mdat <- mDat %>%
-   select(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12) %>%
+   select(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)%>%
    na.omit()
 
 mdat
@@ -240,3 +240,59 @@ ggsave("viz/Dingani/random.png",
        type="Cairo",
        height = 6.0,
        width = 13)
+#3.Using the `mDat.csv` dataset again, make a boxplot of longvetiy_yr" against
+#"order", giving each axis a new clear (informative) label.
+
+mDat1 <- read_xlsx("Data/Dingani/mDat.xlsx")
+
+
+#Boxplot"longevity_yr" against "order"
+box <- ggplot(mDat1, aes(x = order, y = longevity_yr)) +
+  geom_boxplot() +
+  labs(x = "Taxonomic Order", y = "Longevity (years)",
+       title = "Boxplot of Longevity by Taxonomic Order")
+box
+ggsave("viz/Dingani/box.png",
+       device="png",
+       type="Cairo",
+       height = 6.0,
+       width = 13)
+
+# 4. Scatterplots
+# Scatterplot of "longevity_yr" against "b_weight" (without logarithm transformation)
+ggplot(mDat1, aes(x = b_weight, y = longevity_yr, color = order)) +
+  geom_point() +
+  labs(x = "Body Weight", y = "Longevity (years)",
+       title = "Scatterplot of Longevity against Body Weight")
+
+ggsave("viz/Dingani/scatterplt.png",
+       device="png",
+       type="Cairo",
+       height = 6.0,
+       width = 13)
+
+# Scatterplot of natural logarithm of "longevity_yr" against natural logarithm of "b_weight"
+ggplot(mDat, aes(x = log(b_weight), y = log(longevity_yr), color = order)) +
+  geom_point() +
+  labs(x = "Log(Body Weight)", y = "Log(Longevity)",
+       title = "Scatterplot of Log(Longevity) against Log(Body Weight)")
+
+ggsave("viz/Dingani/log_scatterplt.png",
+       device="png",
+       type="Cairo",
+       height = 6.0,
+       width = 13)
+
+#5. Which scatterplot do you think is more informative/appropriate to the data at
+#hand? Write you answer (a couple of sentences will do) in the bit below the following 
+#code chunk where it says "Which plot is better and why?".
+
+#'*Answers*
+#'*The scatterplot of natural logarithm of "longevity_yr" against natural logarithm of "b_weight" (plot 2) is more appropriate*.
+#'*This is because taking the logarithm of both variables helps to better visualize the relationship between them*,
+#'*especially if the relationship is non-linear or if the variables span a wide range of values. Additionally*,
+#'*using logarithms can help to reduce the influence of extreme values and make the patterns in the data more evident*.
+
+
+
+
