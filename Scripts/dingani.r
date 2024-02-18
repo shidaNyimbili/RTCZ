@@ -1,5 +1,14 @@
 #Loading packages
 source("scripts/r prep2.r")
+# library(tidyverse)
+# library(openxlsx)
+# library(readxl)
+# library(writexl)
+# library(ggplot2)
+
+# update.packages(ask = FALSE, dependencies = TRUE)
+
+
 
 ## Question 2:
 #1. Define x to be a sequence that runs from -4 to +4 in steps of 0.25. In one additional line of code,
@@ -269,6 +278,7 @@ ggsave("viz/Dingani/scatterplt.png",
        device="png",
        type="Cairo",
        height = 6.0,
+       
        width = 13)
 
 # Scatterplot of natural logarithm of "longevity_yr" against natural logarithm of "b_weight"
