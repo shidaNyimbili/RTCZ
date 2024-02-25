@@ -121,9 +121,29 @@ socioeconomic_data <- read.xlsx("Data/reserach/Factors.xlsx")
 socioeconomic_data
 # Merge HIV prevalence data with socioeconomic factors data based on Province
 merged_data <- merge(hiv_data, socioeconomic_data, by = "province")
+merged_data
+
+# Convert columns to numeric and check for non-numeric values
+merged_data$Epidemiological <- as.numeric(as.character(merged_data$Epidemiological))
+merged_data$Health_System <- as.numeric(as.character(merged_data$Health_System))
+merged_data$Population_Density <- as.numeric(as.character(merged_data$Population_Density))
+merged_data$Socio_Economic <- as.numeric(as.character(merged_data$Socio_Economic))
+
+# Coerce all columns to numeric except 'province' and 'period'
+merged_data[, -c(1, 4)] <- sapply(merged_data[, -c(1, 4)], as.numeric)
+
+# Check for any non-numeric values
+if (any(is.na(merged_data))) {
+  print("There are missing or non-numeric values in the data.")
+}
+
+# Now attempt to compute correlations
+correlation_matrix <- cor(merged_data[, -c(1, 4)])
 
 # Correlation analysis
 correlation_matrix <- cor(merged_data[, -c(1, 4)])
+
+correlation_matrix
 
 # Visualization: Heatmap of correlation matrix
 heatmap(correlation_matrix, 
