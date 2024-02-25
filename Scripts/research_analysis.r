@@ -158,3 +158,44 @@ summary(lm_model)
 # You may need additional geographic data to plot spatial maps
 
 # Additional analysis and interpretation based on the results
+# Load necessary libraries
+
+
+##Question 2 Additons
+
+# Load HIV prevalence data
+hiv_data <- read.xlsx("Data/reserach/Book2.xlsx")
+hiv_data
+
+# Load socioeconomic factors data
+socioeconomic_data <- read.xlsx("Data/reserach/Factors.xlsx")
+socioeconomic_data
+
+# Load the HIV prevalence rates dataset
+hiv_prevalence <- read.xlsx("Data/reserach/Book2.xlsx")
+
+# Load the factors influencing HIV/AIDS prevalence dataset
+factors <- read.xlsx("Data/reserach/Factors.xlsx")
+
+# Merge the two datasets based on 'province'
+merged_data <- merge(hiv_prevalence, factors, by = "province")
+
+merged_data
+# Check the merged dataset
+head(merged_data)
+
+# Correlation analysis
+correlation_matrix <- cor(merged_data[, c(3:7)])
+
+# Print correlation matrix
+print(correlation_matrix)
+
+# Plot correlation matrix
+corrplot::corrplot(correlation_matrix, method = "color")
+
+# Check column names in the merged dataset
+colnames(merged_data)
+
+# Identify factors contributing to spatial variation in HIV/AIDS prevalence rates
+summary(lm(Average.of.prev ~ Epidemiological + Health_System + Population_Density + Socio_Economic, data = merged_data))
+
