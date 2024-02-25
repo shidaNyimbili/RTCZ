@@ -61,6 +61,14 @@ plot <- ggplot() +
 # View the plot
 print(plot)
 
+# Save the plot
+ggsave("viz/research/analysis1.png",
+       plot,
+       device = "png",
+       type = "cairo",
+       height = 7,
+       width = 10)
+
 # Calculate summary statistics
 summary(prev.data.5$rate)
 
@@ -68,13 +76,6 @@ prev.data.5
 names(prev.data.5)
 
 head(prev.data.5)
-
-proj4string(prev.data.5)
-
-
-# Load necessary libraries
-library(sf)
-library(spdep)
 
 # Check for invalid geometries
 invalid_geoms <- !st_is_valid(prev.data.5)
@@ -97,43 +98,43 @@ listw <- nb2listw(nb, style = "B")
 moran_test <- moran.test(prev.data.5$rate, listw)
 moran_test
 
-# Construct spatial weights matrix based on polygon adjacency
-nb <- poly2nb(prev.data.5$geometry)
-
-nb
-listw <- nb2listw(nb, style = "B")
-
-# Check data type and handle missing values if needed
-# For example:
-# prev.data.5$rate <- as.numeric(prev.data.5$rate)
-# prev.data.5$rate[is.na(prev.data.5$rate)] <- 0  # Replace missing values with appropriate values
-
-# Conduct hotspot analysis
-# Example: Getis-Ord Gi* statistic
-hotspot <- spdep::localG(listw, prev.data.5$rate)
-print(hotspot)
-
-###Test
-# Ensure Data Type: Verify that prev.data.5$rate is a numeric vector
-rate_values <- as.numeric(prev.data.5$rate)
-
-# Check for NA or missing values and handle them if necessary
-# For example:
-# rate_values[is.na(rate_values)] <- 0  # Replace NA values with 0 or any other appropriate value
-
-# Construct spatial weights matrix based on polygon adjacency
-nb <- poly2nb(prev.data.5$geometry)
-listw <- nb2listw(nb, style = "B")
-
-# Conduct hotspot analysis
-hotspot <- spdep::localG(prev.data.5, listw, attr = rate_values)
-print(hotspot)
-
-##Test
+# Install and load the spatialEco package if you haven't already
+# install.packages("remotes")
+remotes::install_github("mpjashby/sfhotspot")
+# Load the sfhotspot package
 
 # Perform spatial interpolation if necessary
 # Example: Spatial interpolation using kriging
 # (This would require additional packages and steps)
 
-# Further analysis and interpretation based on results
+##Objective 2
+# Load required libraries
+library(dplyr)   # For data manipulation
+library(ggplot2) # For data visualization
 
+# Load HIV prevalence data
+hiv_data <- read.xlsx("Data/reserach/prevdata.xlsx")
+hiv_data
+
+# Load socioeconomic factors data
+socioeconomic_data <- read.xlsx("Data/reserach/Factors.xlsx")
+socioeconomic_data
+# Merge HIV prevalence data with socioeconomic factors data based on Province
+merged_data <- merge(hiv_data, socioeconomic_data, by = "province")
+
+# Correlation analysis
+correlation_matrix <- cor(merged_data[, -c(1, 4)])
+
+# Visualization: Heatmap of correlation matrix
+heatmap(correlation_matrix, 
+        col = colorRampPalette(c("blue", "white", "red"))(50), 
+        main = "Correlation Heatmap of HIV Prevalence and Socioeconomic Factors")
+
+# Regression analysis
+lm_model <- lm(prev ~ ., data = merged_data[, -c(1, 4)])
+summary(lm_model)
+
+# Spatial analysis: Visualization of HIV prevalence rates
+# You may need additional geographic data to plot spatial maps
+
+# Additional analysis and interpretation based on the results
