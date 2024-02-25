@@ -29,12 +29,12 @@ zam_packages <- c("tidyverse", "here", "gifski", "gt","gtsummary","gghighlight",
                   "backtest", "quantmod", "tseries", "writexl", "ggpubr", "rcartocolor", "remotes", "geodata",
                   "shiny", "rgeoboundaries", "nasapower", 
                   "leaflet", "ggsflabel", "sf", "RSelenium", "netstat", "GGally", "calendR", "areaplot", "hexbin",
-                  "webshot", "oceanis", "SPlit", "gsubfn", "proto","fpp", "mapview", "shinydashboard", "packrat",
+                  "webshot", "oceanis", "SPlit", "spdep","gsubfn", "proto","fpp", "mapview", "shinydashboard", "packrat",
                   "gt", "bigD","formattable", "reactablefmtr", "scales", "caret","predict3d", "ggpmisc", "cowplot", 
                   "googleway", "ggplot2", "caTools","ggrepel", "giscoR", "ggspatial", "sp", "glmnet", "rnaturalearth", 
                   "rnaturalearthdata", "pacman", "vroom", "rgdal","gridExtra", "GGally","ggraph","igraph","Matrix","network",
                   "quanteda", "sna","maps", "RODBC","elevatr", "cartography","Cairo","sfdep","spdep","igraph", 
-                  "rnaturalearth", "terra","likert", "transformr", "tidygraph","tm","tibble","quanteda.textplots","spData")
+                  "rnaturalearth", "terra","likert","DT", "transformr", "tidygraph","tm","tibble","quanteda.textplots","spData")
 
 
 
@@ -289,83 +289,6 @@ zamBlack <- "#000000"
 #scale_color_manual(values = colors, labels=get_labels(variable))
 
 # colors = c("#002F6C", "#BA0C2F", "#0067B9", "#6C6463", "#651D32", "#A7C6ED", "#8C8985")
-
-
-high_blue <- "<span style='color:#205493;'>**declined**</span>"
-
-arcl<- c(usaid_blue, usaid_red)
-
-# labels ---- 
-
-
-qlabs <- c("2018-Q1",
-           "2018-Q2",
-           "2018-Q3",
-           "2018-Q4",
-           "2019-Q1",
-           "2019-Q2",
-           "2019-Q3",
-           "2019-Q4",
-           "2020-Q1",
-           "2020-Q2",
-           "2020-Q3",
-           "2020-Q4",
-           "2021-Q1",
-           "2021-Q2",
-           "2021-Q3",
-           "2021-Q4",
-           "2022-Q1")
-
-#qlabs
-
-qdate <- c("2018-03-01", 
-           "2018-06-01",
-           "2018-09-01",
-           "2018-12-01",
-           "2019-03-01",
-           "2019-06-01",
-           "2019-09-01",
-           "2019-12-01",
-           "2020-03-01",
-           "2020-06-01",
-           "2020-09-01",
-           "2020-12-01",
-           "2021-03-01",
-           "2021-06-01",
-           "2021-09-01",
-           "2021-12-01",
-           "2022-03-01")
-
-qkey <- data.frame(q_num=1:17,
-                   qlab=qlabs,
-                   qdate=qdate,
-                   year=c(rep(2018:2021, each=4), 2022))
-
-#Malaria Campaigns
-vline1 <- 2016
-vline2 <- 2017
-vline3 <- 2018
-vline4 <- 2020
-
-vline5 <- "2022-04-01"
-vline6 <- 2017-10-01
-vline7 <- 2018-10-01
-vline8 <- 2020-10-01
-
-##PNC Targets
-trgt1 <- as.Date("2018-01-01")
-trgt2 <- as.Date("2019-01-01")
-trgt3 <- as.Date("2020-01-01")
-trgt4 <- as.Date("2021-01-01")
-
-
-# above_5yrs <-"#205493"
-# under_5yrs <-"#BA0C2F"
-
-
-#qkey
-# functions ---- 
-
 
 
 
