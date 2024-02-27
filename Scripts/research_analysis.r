@@ -174,6 +174,9 @@ socioeconomic_data
 # Load the HIV prevalence rates dataset
 hiv_prevalence <- read.xlsx("Data/reserach/Book2.xlsx")
 
+hiv_prevalence <- hiv_prevalence %>%
+  rename(hivaids_prev = 1)
+
 # Load the factors influencing HIV/AIDS prevalence dataset
 factors <- read.xlsx("Data/reserach/Factors.xlsx")
 
@@ -181,17 +184,27 @@ factors <- read.xlsx("Data/reserach/Factors.xlsx")
 merged_data <- merge(hiv_prevalence, factors, by = "province")
 
 merged_data
+
 # Check the merged dataset
 head(merged_data)
 
 # Correlation analysis
 correlation_matrix <- cor(merged_data[, c(3:7)])
 
+correlation_matrix
+
 # Print correlation matrix
 print(correlation_matrix)
 
 # Plot correlation matrix
 corrplot::corrplot(correlation_matrix, method = "color")
+
+ggsave("viz/research/analysis1.png",
+       plot,
+       device = "png",
+       type = "cairo",
+       height = 7,
+       width = 10)
 
 # Check column names in the merged dataset
 colnames(merged_data)
