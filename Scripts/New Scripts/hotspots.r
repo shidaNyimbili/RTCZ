@@ -3,12 +3,14 @@ tes_data1 <- st_read("Data/RTC/GIS/Tree_Equity_Scores_Tucson/Tucson_Tree_Equity_
 
 head(tes_data1)
 
+# Write the extracted data frame to an Excel file
+#write.xlsx(tes_data1, "Data/reserach/subset_mdat.xlsx", rowNames = FALSE)
+
 # Visualize tree equity as histogram
 tes_data <- tes_data1  %>%
 na.omit()
 
 #tes_data <- drop_na(tes_data1)
-
 
 names(tes_data)
 
@@ -17,6 +19,8 @@ tes_data$TreeEquity <- as.numeric(tes_data$TreeEquity)
 hist(tes_data$TreeEquity, main = "Distribution of Tree Equity Scores", xlab = "TreeEquity", ylab = "Frequency")
 
 tes_data$TreeEquity
+
+tes_data
 
 # Visualize tree equity across neighborhoods
 ggplot(tes_data) +
@@ -68,6 +72,7 @@ globalG.test(tes_subset$TreeEquity, tes_w_binary)
 
 # Global G Test
 # Test for global spatial autocorrelation
+tes_subset
 
 # Identify neighbors, create weights, calculate spatial lag
 tes_nbs <- tes_subset |> 
