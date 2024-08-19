@@ -263,3 +263,4 @@ coefficients_df <- district_models %>%
 
 # Print coefficients for each district
 print(coefficients_df)
+

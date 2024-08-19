@@ -1,9 +1,11 @@
 #Load Packages
+
+
 source("scripts/r prep2.r")
 
 #'*St PAULS MISSION SEVERE AND MALRIA DEATHS*
-iccm <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/iccm.xls")
-st.pauls <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/stpaulsmission.xls")
+iccm <- read_xls("Data/RTC/demodata/iccm.xls")
+st.pauls <- read_xls("Data/RTC/demodata/stpaulsmission.xls")
 st.pauls  <- st.pauls  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -19,6 +21,8 @@ st.pauls  <- st.pauls  %>%
 
 names(st.pauls)
 
+st.pauls
+
 st.pauls1 <- st.pauls %>%
   select(2,3,9) %>%
   na.omit()
@@ -33,9 +37,8 @@ st.pauls2 <- st.pauls1 %>%
 
 st.pauls2
 
-
-ggpairs(st.pauls2, columns = 1:2,
-        lower = list(continuous = "smooth", combo="box_no_facet"))
+#Correlation check
+ggpairs(st.pauls2, columns = 1:2)
 
 
 
@@ -79,7 +82,7 @@ ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Export
        width = 13)
 
 #'*Malaria Incidence Maps*
-mal.inc <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/Nchelenge(monthly)_2014-2022.xls")
+mal.inc <- read_xls("C:/Users/snyimbili/Documents/RTCZ/Data Analytics & GIS/R/R Data/R Data/Data PMI/Nchelenge(monthly)_2014-2022.xls")
 mal.inc  <- mal.inc  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -94,6 +97,7 @@ mal.inc  <- mal.inc  %>%
          mnthyr = my(monyr))
 
 names(mal.inc)
+mal.inc
 
 mal.inc1 <- mal.inc %>%
   select(2, 8, 27) %>%
@@ -164,7 +168,7 @@ ggplot(mal.inc2, aes(geometry = geometry, fill = rate)) +
   facet_wrap(~yr) +
   scale_fill_carto_c(name="Proportion of\n Malaria incidence"
                      , palette = "Burg") +
-  labs(x="", y="", caption = "Data Source: HMIS \nNote: 2022 Data runs up to June",
+  labs(x="", y="", caption = "Data Source: PDSR",
        title = "Proportions of Malaria Incidence rates all ages by year, 2018-2022"
        , subtitle = "Darker colors represent a higher proportion of incidence rate") + #for faceted and xy labels include x="Longitude", y="Latitude", +faceted
   theme_void() +
@@ -229,11 +233,6 @@ rnf_malprov <- rnf_malprov %>%
                         TRUE ~ "non-ip"))
 
 rnf_malprov
-
-# rnf_malprov4 <- filter(rnf_malprov, prov == 'Central')
-# 
-# rnf_malprov4
-
 
 table(rnf_malprov$ip, rnf_malprov$prov)
 frq(rnf_malprov$ip) #sjmisc

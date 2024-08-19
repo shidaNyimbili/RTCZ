@@ -6,6 +6,8 @@ source("scripts/r prep2.r")
 rom <- read.delim("https://slcladal.github.io/data/romeo_tidy.txt", sep = "\t")
 rom
 
+
+
 #We now transform that table into a co-occurrence matrix
 rome <- crossprod(table(rom[1:2]))
 diag(rome) <- 0

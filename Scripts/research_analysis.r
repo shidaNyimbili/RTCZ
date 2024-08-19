@@ -35,6 +35,8 @@ districts_zam1 <- districts_zam %>%
   select(7, 10) %>%
   na.omit()
 
+districts_zam1
+
 # Group and join data
 prev.data.4 <- prev.data.3 %>%
   group_by(yr, distrt, subRt)
@@ -60,6 +62,8 @@ plot <- ggplot() +
 
 # View the plot
 print(plot)
+
+provinces_zam
 
 # Save the plot
 ggsave("viz/research/analysis1.png",
@@ -100,7 +104,7 @@ moran_test
 
 # Install and load the spatialEco package if you haven't already
 # install.packages("remotes")
-remotes::install_github("mpjashby/sfhotspot")
+# remotes::install_github("mpjashby/sfhotspot")
 # Load the sfhotspot package
 
 # Perform spatial interpolation if necessary
@@ -109,19 +113,33 @@ remotes::install_github("mpjashby/sfhotspot")
 
 ##Objective 2
 # Load required libraries
-library(dplyr)   # For data manipulation
-library(ggplot2) # For data visualization
+# library(dplyr)   # For data manipulation
+# library(ggplot2) # For data visualization
 
 # Load HIV prevalence data
 hiv_data <- read.xlsx("Data/reserach/prevdata.xlsx")
 hiv_data
 
 # Load socioeconomic factors data
+#Starts HERE
+#Objective 2&5
+source("scripts/r prep2.r")
+
 socioeconomic_data <- read.xlsx("Data/reserach/Factors.xlsx")
 socioeconomic_data
 # Merge HIV prevalence data with socioeconomic factors data based on Province
 merged_data <- merge(hiv_data, socioeconomic_data, by = "province")
 merged_data
+write.xlsx(merged_data, file = "output_file_17.xlsx")
+##NEWN Stuff
+# Calculate the correlation matrix
+correlation_matrix <- cor(merged_data[, c("Average.of.prev", "Epidemiological", "Health_System", "Population_Density", "Socio_Economic")])
+
+# Print the correlation matrix
+print(correlation_matrix)
+
+#####New stuff 2
+
 
 # Convert columns to numeric and check for non-numeric values
 merged_data$Epidemiological <- as.numeric(as.character(merged_data$Epidemiological))
@@ -130,6 +148,7 @@ merged_data$Population_Density <- as.numeric(as.character(merged_data$Population
 merged_data$Socio_Economic <- as.numeric(as.character(merged_data$Socio_Economic))
 
 # Coerce all columns to numeric except 'province' and 'period'
+
 merged_data[, -c(1, 4)] <- sapply(merged_data[, -c(1, 4)], as.numeric)
 
 # Check for any non-numeric values
@@ -139,6 +158,9 @@ if (any(is.na(merged_data))) {
 
 # Now attempt to compute correlations
 correlation_matrix <- cor(merged_data[, -c(1, 4)])
+merged_data
+
+
 
 # Correlation analysis
 correlation_matrix <- cor(merged_data[, -c(1, 4)])
@@ -150,8 +172,10 @@ heatmap(correlation_matrix,
         col = colorRampPalette(c("blue", "white", "red"))(50), 
         main = "Correlation Heatmap of HIV Prevalence and Socioeconomic Factors")
 
+merged_data
+
 # Regression analysis
-lm_model <- lm(prev ~ ., data = merged_data[, -c(1, 4)])
+lm_model <- lm(Average.of.prev ~ ., data = merged_data[, -c(1, 4)])
 summary(lm_model)
 
 # Spatial analysis: Visualization of HIV prevalence rates
@@ -210,5 +234,5 @@ ggsave("viz/research/analysis1.png",
 colnames(merged_data)
 
 # Identify factors contributing to spatial variation in HIV/AIDS prevalence rates
-summary(lm(Average.of.prev ~ Epidemiological + Health_System + Population_Density + Socio_Economic, data = merged_data))
+summary(lm(HIV.prevalence.rate ~ Epidemiological + Health_System + Population_Density + Socio_Economic, data = merged_data))
 

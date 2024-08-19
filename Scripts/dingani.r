@@ -6,8 +6,7 @@ source("scripts/r prep2.r")
 # library(writexl)
 # library(ggplot2)
 
-# update.packages(ask = FALSE, dependencies = TRUE)
-
+#update.packages(ask = FALSE, dependencies = TRUE)
 
 
 ## Question 2:

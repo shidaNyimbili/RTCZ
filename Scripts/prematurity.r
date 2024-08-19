@@ -1,9 +1,76 @@
 
 source("scripts/r prep2.r")
 
-provinces_zam <- st_read("Data/Updated Shapefiles/Updated_Province.shp")
-perinatal.mort <- read_xlsx("Data/prematurity/perinatal mortality rate.xlsx")
-perinatal.mort
+install.packages("libwgeom")
+
+
+demo <- read_csv("C:/Users/SNyimbili/OneDrive - Right to Care/Desktop/R/Book3.csv")
+demo
+
+demo1 <- demo %>% 
+  mutate(Date = as.Date(Date, format = "%d/%m/%y"))
+
+demo1
+
+
+###Stata
+
+#date_upload
+demoR <- read_csv("C:/Users/SNyimbili/OneDrive - Right to Care/Desktop/R/Stata.csv")
+
+demoR
+
+demoR1 <- demoR %>% 
+  mutate(date_uploaded = as.Date(date_uploaded, format = "%d/%m/%y"))
+
+demoR1
+
+sum(is.na(demoR1$date_uploaded))           ###Its giving 461 NAs
+
+demoR1 <- na.omit(demoR1)
+
+demoR1
+
+#tdb_creation_date
+demoR
+
+tbd_crtn_col <- demoR %>% 
+  mutate(tdb_creation_date = as.Date(tdb_creation_date, format = "%d/%m/%y"))
+
+tbd_crtn_col
+
+
+sum(is.na(tbd_crtn_col$tdb_creation_date))       #Its giving 140 NAs
+
+colnames(tbd_crtn_col)
+
+
+# install.packages("magick")
+library(magick)
+
+# Reading a PNG
+image <- image_read('https://raw.githubusercontent.com/R-CoderDotCom/samples/main/bird.png')
+
+# Printing the image
+print(image, info = FALSE) 
+
+
+
+
+
+
+
+install.packages("here")
+devtools::install_github("thomasp85/patchwork")
+
+remotes::install_gitlab("dickoa/rgeoboundaries")
+
+install.packages("easypackages")
+
+
+
+
+perinatal.mort <- read_xlsx("C:/Users/SNyimbili/Downloads/perinatal mortality rate.xlsx")
 perinatal.mort  <- perinatal.mort  %>%
   mutate(year = str_sub(period,
                         start=nchar(period)-4,
@@ -26,19 +93,19 @@ perinatal.mort3 <- perinatal.mort2 %>%
 
 perinatal.mort3
 
-#zam.boundary <- geoboundaries(country = "Zambia"
-                              #, adm_lvl = 1) %>% 
-  #select(shapeName)
+zam.boundary <- geoboundaries(country = "Zambia"
+                              , adm_lvl = 1) %>% 
+  select(shapeName)
 
-#zam.boundary
+zam.boundary
 
 #write_xlsx(zam.boundary,"data/prematurity/province.xlsx")
 
-  provinces_zam1 <- provinces_zam %>%
+zam.boundary1 <- zam.boundary %>%
   select(1, 2) %>%
   na.omit()
 
-provinces_zam1
+zam.boundary1
 
 
 map_colors <- carto_pal(name = "Burg")
@@ -51,8 +118,8 @@ perinatal.mort4 <- perinatal.mort3 %>%
 perinatal.mort4
 
 perinatal.mort5 <- left_join(perinatal.mort4
-                      , provinces_zam1
-                      , by = c("prov" = "PROVINCE")) %>%
+                      , zam.boundary1
+                      , by = c("prov" = "shapeName")) %>%
   sf::st_as_sf()
 
 perinatal.mort5
@@ -63,10 +130,10 @@ ggplot(perinatal.mort5, aes(geometry = geometry, fill = rate)) +
   geom_sf_text(aes(label = prov), size = 3) +
   facet_wrap(~yr) +
   scale_fill_carto_c(name="Proportion of\n Mortality Rate"
-                     , palette = "Blue") +
-  labs(x="", y="", caption = "Data Source: Action HIV",
-       title = "HIV Positivity Rate, 2017-2022"
-       , subtitle = "Darker colors represent a higher proportional rate") + #for faceted and xy labels include x="Longitude", y="http://127.0.0.1:28939/graphics/plot_zoom_png?width=923&height=900Latitude", +faceted
+                     , palette = "Burg") +
+  labs(x="", y="", caption = "Data Source: PDSR",
+       title = "Perinatal Mortality Rate, 2017-2022"
+       , subtitle = "Darker colors represent a higher proportion of mortality rate") + #for faceted and xy labels include x="Longitude", y="Latitude", +faceted
   theme_void() +
   theme(plot.title.position = "plot",
         plot.title = element_text(size = 16, hjust=0.5, family="Gill Sans Mt", face="bold"),
@@ -96,7 +163,7 @@ ggsave("viz/prematurity/perinatal_mortality_rate.png",
 #'*Prematurity rate*
 prema.rate <- read_xlsx("data/prematurity/prematurity rate.xlsx")
 
-prema.rate$period <- as.Date(prema.rate$period)
+prema.rate$Month <- as.Date(prema.rate$Month)
 
 prema.rate
 
@@ -116,7 +183,7 @@ prema.rate3 <- prema.rate2 %>%
 
 prema.rate3
 
-ggplot(prema.rate3, aes(x = period, y = rate, group = subRt, colour = subRt)) +
+ggplot(prema.rate3, aes(x = Month, y = rate, group = subRt, colour = subRt)) +
   geom_point(alpha=.6, size=1.9) + 
   #geom_line(size=1) +
   geom_smooth(method = loess, size = .8, se=FALSE) +
@@ -198,39 +265,10 @@ frsh.stillmacerbirth
 
 
 frsh.stillmacerbirth <- frsh.stillmacerbirth %>% 
-  gather(key = subRt , value = rate, c(frsh.stlbrth.Rt, mcrtd.brth.Rt))
+  gather(key = subRt , value = rate, c(mcrtd.brth.Rt,frsh.stlbrth.Rt))
 
-frsh.stillmacerbirth
-
-# pr.mr.st23 <- pr.mr.st %>%
-#   select(1,4,5)
-# 
-# pr.mr.st23
-# 
-# pr.mr.st24 <- melt(pr.mr.st23[c(1, 2, 3)], id = 'Month')
-# 
-# pr.mr.st24
-# 
-# 
-# fmsb <- ggplot(pr.mr.st24, aes(x=Month, y=value , fill=variable), alpha=0.6)+ 
-#   geom_area(position=position_dodge(), color="#CFCDC9") +
-#   geom_area(position = position_dodge()) +
-#   scale_y_continuous(limits = c(0,8),
-#                      breaks = c(0,2,4,6,8)) +
-#   xlab("") + 
-#   ylab("Rate") +
-#   ggtitle("Fresh stillbirth and Macerated stillbirth per 1000 live births ,Jan 2019 - Oct 2022") +
-#   scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-#   scale_fill_manual(name ="",
-#                     values = c(usaid_red,usaid_blue),labels = c("Fresh Stillbirth", "Macerated Stillbirth")) + base
-# 
-# fmsb
-# 
-# fmsb <- ggplot(pr.mr.st, aes(x=period, y=value , fill=variable), alpha=0.6)+
-#   geom_area(position=position_dodge(), color="#CFCDC9")
-
-ggplot(frsh.stillmacerbirth, aes(x = mth, y = rate, group = subRt, fill = subRt), alpha=0.6) +
-  geom_area(alpha=.8, position = position_dodge()) +
+ggplot(frsh.stillmacerbirth, aes(x = mth, y = rate, group = subRt, fill = subRt)) +
+  geom_area(alpha=0.2, position = position_dodge()) +
   scale_y_continuous(limits = c(0,8),
                      breaks = c(0,2,4,6,8)) +
   xlab("") + 
@@ -238,7 +276,7 @@ ggplot(frsh.stillmacerbirth, aes(x = mth, y = rate, group = subRt, fill = subRt)
   ggtitle("Fresh stillbirth and Macerated stillbirth per 1000 live births ,Jan 2019 - Oct 2022") +
   scale_x_date(date_labels="%b %y",date_breaks="3 months") +
   scale_fill_manual(name ="",
-                     values = c(usaid_red,usaid_blue),labels = c("Macerated Stillbirth","Fresh Stillbirth")) + base
+                     values = c(usaid_red,usaid_blue),labels = c("Fresh Stillbirth", "Macerated Stillbirth")) + base
 
 ggsave("viz/prematurity/stillbirths.png",
        device="png",
