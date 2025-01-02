@@ -127,7 +127,7 @@ baseyNoGrid <- theme(
   axis.text.y = element_text(size = 14),
   legend.text = element_text(size = 14),
   legend.title = element_blank(),
-  legend.position = "right",
+  legend.position = "bottom",
   strip.text = element_text(size = 14, family = "Gill Sans Mt"),
   legend.background = element_rect(fill = "white", color = "black"),
   panel.grid = element_blank(),
