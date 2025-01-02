@@ -117,6 +117,22 @@ basey <- theme(plot.title = element_text(size = 16),
   strip.text=element_text(size=14, family="Gill Sans Mt"),
   legend.background = element_rect(fill = "white", color = "black"))
 
+
+baseyNoGrid <- theme(
+  plot.title = element_text(size = 16),
+  plot.caption = element_text(size = 10),
+  axis.title.x = element_text(size = 14, family = "Gill Sans Mt", face = "bold"),
+  axis.title.y = element_text(size = 14, family = "Gill Sans Mt", face = "bold"),
+  axis.text.x = element_text(size = 14),
+  axis.text.y = element_text(size = 14),
+  legend.text = element_text(size = 14),
+  legend.title = element_blank(),
+  legend.position = "right",
+  strip.text = element_text(size = 14, family = "Gill Sans Mt"),
+  legend.background = element_rect(fill = "white", color = "black"),
+  panel.grid = element_blank(),
+  panel.border = element_blank())
+
 Angle <- theme(plot.title = element_text(size = 16),
                plot.caption = element_text(size=10),
                axis.title.x = element_text(size = 12, family="Gill Sans Mt", face="bold"),
