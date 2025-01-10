@@ -25,10 +25,7 @@ dt <- as.Date("2020-01-01")
 plot <- ggplot(data, aes(Period, value, fill = indicators))
 plot <- plot +
   geom_bar(stat = "identity", position = 'dodge') +
-  geom_text(aes(label = scales::percent(value), vjust = -0.5), position = position_dodge(0.9)) +  # Add labels
-  #geom_vline(xintercept = dt, linetype = "dashed", color = "red") +  # Add vertical line
-  # annotate("text", x = 1.5, y = 0.19, label = "Pre-Lynx rollout", color = "red", size = 4) +  # Label before 2020
-  # annotate("text", x = 2.5, y = 0.19, label = "Post-Lynx rollout", color = "red", size = 4) +  # Label after 2020
+  geom_text(aes(label = scales::percent(value), vjust = -0.5), position = position_dodge(0.9)) +
   labs(
     title = "HTS TST Performance by province Before & After Lynx rollout - Selected Districts",
     x = "Period",

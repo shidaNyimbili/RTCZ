@@ -1,76 +1,77 @@
 
 source("scripts/r prep2.r")
 
-install.packages("libwgeom")
+# install.packages("libwgeom")
+# 
+# 
+# demo <- read_csv("C:/Users/SNyimbili/OneDrive - Right to Care/Desktop/R/Book3.csv")
+# demo
+# 
+# demo1 <- demo %>% 
+#   mutate(Date = as.Date(Date, format = "%d/%m/%y"))
+# 
+# demo1
+# 
+# 
+# ###Stata
+# 
+# #date_upload
+# demoR <- read_csv("C:/Users/SNyimbili/OneDrive - Right to Care/Desktop/R/Stata.csv")
+# 
+# demoR
+# 
+# demoR1 <- demoR %>% 
+#   mutate(date_uploaded = as.Date(date_uploaded, format = "%d/%m/%y"))
+# 
+# demoR1
+# 
+# sum(is.na(demoR1$date_uploaded))           ###Its giving 461 NAs
+# 
+# demoR1 <- na.omit(demoR1)
+# 
+# demoR1
+# 
+# #tdb_creation_date
+# demoR
+# 
+# tbd_crtn_col <- demoR %>% 
+#   mutate(tdb_creation_date = as.Date(tdb_creation_date, format = "%d/%m/%y"))
+# 
+# tbd_crtn_col
+# 
+# 
+# sum(is.na(tbd_crtn_col$tdb_creation_date))       #Its giving 140 NAs
+# 
+# colnames(tbd_crtn_col)
+# 
+# 
+# # install.packages("magick")
+# library(magick)
+# 
+# # Reading a PNG
+# image <- image_read('https://raw.githubusercontent.com/R-CoderDotCom/samples/main/bird.png')
+# 
+# # Printing the image
+# print(image, info = FALSE) 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# install.packages("here")
+# devtools::install_github("thomasp85/patchwork")
+# 
+# remotes::install_gitlab("dickoa/rgeoboundaries")
+# 
+# install.packages("easypackages")
 
 
-demo <- read_csv("C:/Users/SNyimbili/OneDrive - Right to Care/Desktop/R/Book3.csv")
-demo
-
-demo1 <- demo %>% 
-  mutate(Date = as.Date(Date, format = "%d/%m/%y"))
-
-demo1
 
 
-###Stata
-
-#date_upload
-demoR <- read_csv("C:/Users/SNyimbili/OneDrive - Right to Care/Desktop/R/Stata.csv")
-
-demoR
-
-demoR1 <- demoR %>% 
-  mutate(date_uploaded = as.Date(date_uploaded, format = "%d/%m/%y"))
-
-demoR1
-
-sum(is.na(demoR1$date_uploaded))           ###Its giving 461 NAs
-
-demoR1 <- na.omit(demoR1)
-
-demoR1
-
-#tdb_creation_date
-demoR
-
-tbd_crtn_col <- demoR %>% 
-  mutate(tdb_creation_date = as.Date(tdb_creation_date, format = "%d/%m/%y"))
-
-tbd_crtn_col
-
-
-sum(is.na(tbd_crtn_col$tdb_creation_date))       #Its giving 140 NAs
-
-colnames(tbd_crtn_col)
-
-
-# install.packages("magick")
-library(magick)
-
-# Reading a PNG
-image <- image_read('https://raw.githubusercontent.com/R-CoderDotCom/samples/main/bird.png')
-
-# Printing the image
-print(image, info = FALSE) 
-
-
-
-
-
-
-
-install.packages("here")
-devtools::install_github("thomasp85/patchwork")
-
-remotes::install_gitlab("dickoa/rgeoboundaries")
-
-install.packages("easypackages")
-
-
-
-
-perinatal.mort <- read_xlsx("C:/Users/SNyimbili/Downloads/perinatal mortality rate.xlsx")
+# perinatal.mort <- read_xlsx("C:/Users/SNyimbili/Downloads/perinatal mortality rate.xlsx")
+perinatal.mort <- read_xlsx("C:/Users/SNyimbili/Downloads/alex.xlsx")
 perinatal.mort  <- perinatal.mort  %>%
   mutate(year = str_sub(period,
                         start=nchar(period)-4,
@@ -124,7 +125,6 @@ perinatal.mort5 <- left_join(perinatal.mort4
 
 perinatal.mort5
 
-
 ggplot(perinatal.mort5, aes(geometry = geometry, fill = rate)) +
   geom_sf()+
   geom_sf_text(aes(label = prov), size = 3) +
@@ -132,8 +132,8 @@ ggplot(perinatal.mort5, aes(geometry = geometry, fill = rate)) +
   scale_fill_carto_c(name="Proportion of\n Mortality Rate"
                      , palette = "Burg") +
   labs(x="", y="", caption = "Data Source: PDSR",
-       title = "Perinatal Mortality Rate, 2017-2022"
-       , subtitle = "Darker colors represent a higher proportion of mortality rate") + #for faceted and xy labels include x="Longitude", y="Latitude", +faceted
+       title = "Proportion of Postpartum FP clients at 6 weeks, 2020-2024"
+       , subtitle = "Darker colors represent a higher proportion of mortality rate(%)") + #for faceted and xy labels include x="Longitude", y="Latitude", +faceted
   theme_void() +
   theme(plot.title.position = "plot",
         plot.title = element_text(size = 16, hjust=0.5, family="Gill Sans Mt", face="bold"),
@@ -154,7 +154,7 @@ ggplot(perinatal.mort5, aes(geometry = geometry, fill = rate)) +
 #   addTiles() %>%
 #   addPolygons(label = zam.boundary2$shapeName)
 
-ggsave("viz/prematurity/perinatal_mortality_rate.png",
+ggsave("Viz/6weeks FP_rate.png",
        device="png",
        type="cairo",
        height = 6.5,

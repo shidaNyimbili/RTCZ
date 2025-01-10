@@ -1,59 +1,53 @@
-# Load required libraries
-
 source("scripts/r prep2.r")
 
-
-#This will return TRUE if the package is installed, FALSE otherwise
-if (require("rgdal", character.only = TRUE)) {
-  cat("The package is installed.\n")
-} else {
-  cat("The package is NOT installed.\n")
-}
-
-
 # Read shapefile
-provinces_zam <- st_read("Data/Updated Shapefiles/Updated_Province.shp")
 districts_zam <- st_read("Data/Updated Shapefiles/Districts.shp")
 
-# Read HIV prevalence rates data
-prev.hiv <- read_xlsx("Data/prematurity/HIV Prev Rates.xlsx")
-prev.data <- read_xlsx("Data/reserach/prevdata.xlsx")
+# Read HIV.prevalence.rates data
+actionhiv <- read_xlsx("Data/reserach/prevdataactionhiv.xlsx")
+
+
+actionhiv
 
 # Extract year from the 'period' column
-prev.data <- prev.data %>%
+actionhiv <- actionhiv %>%
   mutate(year = str_sub(period, start = nchar(period) - 4, end = nchar(period)))
 
 # Select relevant columns and handle missing values
-prev.data.1 <- prev.data %>%
+actionhiv.1 <- actionhiv %>%
   select(1, 2, 3, 5) %>%
   na.omit()
 
 # Rename columns
-prev.data.2 <- prev.data.1 %>%
+actionhiv.2 <- actionhiv.1 %>%
   rename(prov = 1,
          distrt = 2,
          prev.rt = 3,
          yr = 4)
 
+actionhiv.2
+
 # Reshape the data
-prev.data.3 <- prev.data.2 %>%
+actionhiv.3 <- actionhiv.2 %>%
   gather(key = subRt, value = rate, c(prev.rt))
+
+actionhiv.3
 
 # Extract relevant columns from provinces_zam
 districts_zam1 <- districts_zam %>%
   select(7, 10) %>%
   na.omit()
 
-districts_zam1
-
 # Group and join data
-prev.data.4 <- prev.data.3 %>%
+actionhiv.4 <- actionhiv.3 %>%
   group_by(yr, distrt, subRt)
 
-prev.data.5 <- left_join(prev.data.4,
+actionhiv.5 <- left_join(actionhiv.4,
                          districts_zam1,
                          by = c("distrt" = "DISTRICT")) %>%
   sf::st_as_sf()
+
+actionhiv.5
 
 
 # Define a reversed color palette
@@ -61,8 +55,7 @@ rev_palette <- rev(RColorBrewer::brewer.pal(9, "Blues"))
 
 # Plotting
 plot <- ggplot() +
-  geom_sf(data = provinces_zam, fill = NA, color = "black") + # Add provincial boundaries
-  geom_sf(data = prev.data.5, aes(fill = rate)) +
+  geom_sf(data = actionhiv.5, aes(fill = rate)) +
   scale_fill_gradient(name = "Prev Rates(%)",
                       low = rev_palette[length(rev_palette)],
                       high = rev_palette[1]) +
@@ -72,84 +65,22 @@ plot <- ggplot() +
 # View the plot
 print(plot)
 
-provinces_zam
+actionhiv_data <- read.xlsx("Data/reserach/Book3.xlsx")
+actionhiv_data
 
-# Save the plot
-ggsave("viz/research/analysis1.png",
-       plot,
-       device = "png",
-       type = "cairo",
-       height = 7,
-       width = 10)
-
-
-
-# Calculate summary statistics
-summary(prev.data.5$rate)
-
-prev.data.5
-names(prev.data.5)
-
-head(prev.data.5)
-
-# Check for invalid geometries
-invalid_geoms <- !st_is_valid(prev.data.5)
-invalid_geoms_indices <- which(invalid_geoms)
-
-# Attempt to fix invalid geometries
-prev.data.5 <- st_make_valid(prev.data.5)
-
-# Check again for invalid geometries
-invalid_geoms <- !st_is_valid(prev.data.5)
-invalid_geoms_indices <- which(invalid_geoms)
-
-# Construct spatial weights matrix based on polygon adjacency
-nb <- poly2nb(prev.data.5$geometry)
-
-# Convert neighbor list to spatial weights matrix
-listw <- nb2listw(nb, style = "B")
-
-# Perform Moran's I test
-moran_test <- moran.test(prev.data.5$rate, listw)
-moran_test
-
-# Install and load the spatialEco package if you haven't already
-# install.packages("remotes")
-# remotes::install_github("mpjashby/sfhotspot")
-# Load the sfhotspot package
-
-# Perform spatial interpolation if necessary
-# Example: Spatial interpolation using kriging
-# (This would require additional packages and steps)
-
-##Objective 2
-# Load required libraries
-# library(dplyr)   # For data manipulation
-# library(ggplot2) # For data visualization
-
-# Load HIV prevalence data
-hiv_data <- read.xlsx("Data/reserach/prevdata.xlsx")
-hiv_data
-
-# Load socioeconomic factors data
-#Starts HERE
-#Objective 2&5
-source("scripts/r prep2.r")
-
-socioeconomic_data <- read.xlsx("Data/reserach/Factors.xlsx")
+socioeconomic_data <- read.xlsx("Data/reserach/Factorsaction.xlsx")
 socioeconomic_data
 # Merge HIV prevalence data with socioeconomic factors data based on Province
-merged_data <- merge(hiv_data, socioeconomic_data, by = "province")
+merged_data <- merge(actionhiv_data, socioeconomic_data, by = "province")
 merged_data
 write.xlsx(merged_data, file = "output_file_17.xlsx")
-##NEWN Stuff
+
+
 # Calculate the correlation matrix
 correlation_matrix <- cor(merged_data[, c("Average.of.prev", "Epidemiological", "Health_System", "Population_Density", "Socio_Economic")])
 
 # Print the correlation matrix
 print(correlation_matrix)
-
-#####New stuff 2
 
 
 # Convert columns to numeric and check for non-numeric values
@@ -160,7 +91,7 @@ merged_data$Socio_Economic <- as.numeric(as.character(merged_data$Socio_Economic
 
 # Coerce all columns to numeric except 'province' and 'period'
 
-merged_data[, -c(1, 4)] <- sapply(merged_data[, -c(1, 4)], as.numeric)
+merged_data[, -c(1, 2)] <- sapply(merged_data[, -c(1, 2)], as.numeric)
 
 # Check for any non-numeric values
 if (any(is.na(merged_data))) {
@@ -168,13 +99,13 @@ if (any(is.na(merged_data))) {
 }
 
 # Now attempt to compute correlations
-correlation_matrix <- cor(merged_data[, -c(1, 4)])
+correlation_matrix <- cor(merged_data[, -c(1, 2)])
 merged_data
 
 
 
 # Correlation analysis
-correlation_matrix <- cor(merged_data[, -c(1, 4)])
+correlation_matrix <- cor(merged_data[, -c(1, 2)])
 
 correlation_matrix
 
@@ -186,7 +117,7 @@ heatmap(correlation_matrix,
 merged_data
 
 # Regression analysis
-lm_model <- lm(Average.of.prev ~ ., data = merged_data[, -c(1, 4)])
+lm_model <- lm(Average.of.prev ~ ., data = merged_data[, -c(1, 2)])
 summary(lm_model)
 
 # Spatial analysis: Visualization of HIV prevalence rates
@@ -199,8 +130,8 @@ summary(lm_model)
 ##Question 2 Additons
 
 # Load HIV prevalence data
-hiv_data <- read.xlsx("Data/reserach/Book2.xlsx")
-hiv_data
+actionhiv_data <- read.xlsx("Data/reserach/Book2.xlsx")
+actionhiv_data
 
 # Load socioeconomic factors data
 socioeconomic_data <- read.xlsx("Data/reserach/Factors.xlsx")
@@ -245,5 +176,5 @@ ggsave("viz/research/analysis1.png",
 colnames(merged_data)
 
 # Identify factors contributing to spatial variation in HIV/AIDS prevalence rates
-summary(lm(HIV.prevalence.rate ~ Epidemiological + Health_System + Population_Density + Socio_Economic, data = merged_data))
+summary(lm(Average.of.prev ~ Epidemiological + Health_System + Socio_Economic, data = merged_data))
 

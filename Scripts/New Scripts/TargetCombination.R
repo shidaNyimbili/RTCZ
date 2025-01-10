@@ -11,8 +11,6 @@ Targets_Luapula <- "Targets Luapula.xlsx"
 Targets_Muchinga <- "Targets Muchinga.xlsx"
 Targets_Northen <- "Targets Northern.xlsx"
 
-View(Targets_Northen)
-
 zambia_target_header <- c("Province","District", "Facility", "DatimTarget",
                             "DATIMTarget_Adj", "Indicator","Group")
 
@@ -291,7 +289,7 @@ combinedTarget$Indicator[combinedTarget$Indicator=='PMTCT EID'] <- 'PMTCT_EID'
 table(combinedTarget$Indicator,combinedTarget$Group)
 
 #get the final csv of the correctly exported targets
-write.csv(combinedTarget, "Combined-Zambia-Targets-19-08-2024.csv", row.names = FALSE)
+write.csv(combinedTarget, "Combined-Zambia-Targets-21-08-2024.csv", row.names = FALSE)
 
 
 
